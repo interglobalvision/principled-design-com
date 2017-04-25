@@ -3,6 +3,60 @@ get_header();
 ?>
 
 <main id="main-content">
+  <div id="map">
+      <div class="map-block">
+        <div class="map-block-content">
+          <p>1</p>
+        </div>
+      </div>
+      <div class="map-block">
+        <div class="map-block-content">
+          <p>1</p>
+        </div>
+      </div>
+      <div class="map-block">
+        <div class="map-block-content">
+          <p>1</p>
+        </div>
+      </div>
+      <div class="map-block">
+        <div class="map-block-content">
+          <p>1</p>
+        </div>
+      </div>
+      <div class="map-block">
+        <div class="map-block-content">
+          <p>1</p>
+        </div>
+      </div>
+      <div class="map-block">
+        <div class="map-block-content">
+          <p>1</p>
+        </div>
+      </div>
+      <div class="map-block">
+        <div class="map-block-content">
+          <p>1</p>
+        </div>
+      </div>
+      <div class="map-block">
+        <div class="map-block-content">
+          <p>1</p>
+        </div>
+      </div>
+      <div class="map-block">
+        <div class="map-block-content">
+          <p>1</p>
+        </div>
+      </div>
+      <div class="map-block">
+        <div class="map-block-content">
+          <p>1</p>
+        </div>
+      </div>
+  </div>
+<?php
+/*
   <section id="posts">
     <div class="container">
       <div class="grid-row">
@@ -28,12 +82,14 @@ if( have_posts() ) {
         <article class="u-alert grid-item item-s-12"><?php _e('Sorry, no posts matched your criteria :{'); ?></article>
 <?php
 } ?>
-      
+
       </div>
     </div>
   </section>
 
   <?php get_template_part('partials/pagination'); ?>
+ */
+?>
 
 </main>
 
