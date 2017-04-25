@@ -1,10 +1,5 @@
-globie-wordpress-starter-pack
+principled-design-com theme
 ---
-v 1.7.6
-
-Starting point for our wordpress themes
-
-`git clone git@github.com:interglobalvision/globie-wordpress-starter-pack.git`
 
 Tech this uses [thnx]:
 
@@ -29,5 +24,3 @@ Tech this uses [thnx]:
 #### Notes
 
 - When you install bower packages make sure to `--save` into the `bower.json` otherwise the gulpfile will fail to find and import correctly into the libraries
-
-![](http://i.imgur.com/G56ITX7.png)
