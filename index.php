@@ -3,58 +3,8 @@ get_header();
 ?>
 
 <main id="main-content">
-  <div id="map">
-      <div class="map-block">
-        <div class="map-block-content">
-          <p>1</p>
-        </div>
-      </div>
-      <div class="map-block">
-        <div class="map-block-content">
-          <p>1</p>
-        </div>
-      </div>
-      <div class="map-block">
-        <div class="map-block-content">
-          <p>1</p>
-        </div>
-      </div>
-      <div class="map-block">
-        <div class="map-block-content">
-          <p>1</p>
-        </div>
-      </div>
-      <div class="map-block">
-        <div class="map-block-content">
-          <p>1</p>
-        </div>
-      </div>
-      <div class="map-block">
-        <div class="map-block-content">
-          <p>1</p>
-        </div>
-      </div>
-      <div class="map-block">
-        <div class="map-block-content">
-          <p>1</p>
-        </div>
-      </div>
-      <div class="map-block">
-        <div class="map-block-content">
-          <p>1</p>
-        </div>
-      </div>
-      <div class="map-block">
-        <div class="map-block-content">
-          <p>1</p>
-        </div>
-      </div>
-      <div class="map-block">
-        <div class="map-block-content">
-          <p>1</p>
-        </div>
-      </div>
-  </div>
+  <?php get_template_part('partials/map'); ?>
+
 <?php
 /*
   <section id="posts">
