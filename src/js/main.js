@@ -11,7 +11,7 @@ Site = {
     });
 
     $(document).ready(function () {
-
+      _this.Shapes.init();
     });
 
   },
@@ -28,6 +28,45 @@ Site = {
       string = string.replace(/ ([^ ]*)$/,'&nbsp;$1');
       $(this).html(string);
     });
+  },
+};
+
+Site.Shapes = {
+  currentState: 0,
+  maxState: 6,
+  timer: null,
+  interval: 12000,
+  init: function() {
+    var _this = this;
+
+    _this.setState();
+    _this.startInterval();
+  },
+
+  startInterval: function() {
+    var _this = this;
+
+    _this.timer = setInterval(function() {_this.setState();}, _this.interval);
+  },
+
+  nextState: function() {
+    var _this = this;
+
+    _this.currentState++;
+
+    if (_this.currentState > _this.maxState) {
+      _this.currentState = 1;
+    }
+
+    return _this.currentState;
+  },
+
+  setState: function() {
+    var _this = this;
+
+    $('.background-shape')
+    .removeClass('shape-state-' + _this.currentState)
+    .addClass('shape-state-' + _this.nextState());
   },
 };
 
