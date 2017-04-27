@@ -41,9 +41,17 @@ Site.Map = {
     left: false,
     right: false,
   },
+  window: {
+    width: 0,
+    height: 0,
+  },
+  mapPosition: false,
 
   init: function() {
     var _this =  this;
+
+    // Set windowSize
+    _this.getWindowSize();
 
     // Set map element
     _this.map = document.getElementById('map');
@@ -54,6 +62,13 @@ Site.Map = {
     // bind mouse position
     document.addEventListener('mousemove', _this.handleMouseMove.bind(_this));
 
+  },
+
+  getWindowSize: function() {
+    var _this =  this;
+
+    _this.window.width = window.innerWidth;
+    _this.window.height = window.innerHeight;
   },
 
   setPanZones: function() {
@@ -95,7 +110,6 @@ Site.Map = {
 
     if (posY > _this.panZones.up.max && posY < _this.panZones.down.min && posX > _this.panZones.left.max && posX < _this.panZones.right.min) { // not in a zone
       _this.panning = false;
-      console.log('-');
     } else {
       _this.panning = true;
 
@@ -116,7 +130,6 @@ Site.Map = {
         _this.pan.right = true;
       }
 
-      console.log(_this.pan);
       _this.triggerAnimation();
     }
 
@@ -143,9 +156,67 @@ Site.Map = {
   animate: function() {
     var _this =  this;
 
-    // Get current map position
+    if (!_this.panning) {
+      return true;
+    }
 
-    // Move
+    console.log('animating');
+
+
+    // Get current map position
+    if (!_this.mapPosition) {
+      _this.mapPosition = _this.getMapPosition();
+    }
+
+    console.log(_this.mapPosition);
+
+    // Move up
+    if (_this.pan.up) {
+      console.log('up');
+      _this.mapPosition[5] = _this.mapPosition[5] + 1;
+      console.log(_this.mapPosition[5]);
+    }
+
+    // Move down
+    if (_this.pan.down) {
+      console.log('down');
+      _this.mapPosition[5] = _this.mapPosition[5] - 1;
+      console.log(_this.mapPosition[5]);
+    }
+
+    // Move left
+    if (_this.pan.left) {
+      console.log('left');
+      _this.mapPosition[4] = _this.mapPosition[4] + 1;
+      console.log(_this.mapPosition[4]);
+    }
+
+    // Move right
+    if (_this.pan.right) {
+      console.log('right');
+      _this.mapPosition[4] = _this.mapPosition[4] - 1;
+      console.log(_this.mapPosition[4]);
+    }
+
+    _this.map.style.transform = 'matrix(' + _this.mapPosition.toString() + ')';
+
+    window.requestAnimationFrame(_this.animate.bind(_this));
+
+  },
+
+  getMapPosition: function() {
+    var _this =  this;
+
+    // Get current element position (transform values)
+    var transformMatrix = getComputedStyle(this.map)['transform']; // Returns a string like "matrix(0,0,0,0,0,0)"
+
+    // Get only the values
+    transformMatrix = transformMatrix.replace('matrix(','').replace(')', ''); // Returns a string like "0,0,0,0,0,0"
+
+    // Make it into an array
+    return transformMatrix = transformMatrix.split(', ').map( function(item) {
+          return parseInt(item, 10);
+    });; // Returns an array like [0,0,0,0,0,0]
 
   },
 };
