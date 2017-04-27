@@ -26,11 +26,6 @@
   </div>
   <div class="map-block">
     <div class="map-block-content">
-      <p>5</p>
-    </div>
-  </div>
-  <div class="map-block">
-    <div class="map-block-content">
       <p>6</p>
     </div>
   </div>
