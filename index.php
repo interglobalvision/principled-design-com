@@ -3,6 +3,10 @@ get_header();
 ?>
 
 <main id="main-content">
+  <?php get_template_part('partials/map'); ?>
+
+<?php
+/*
   <section id="posts">
     <div class="container">
       <div class="grid-row">
@@ -28,12 +32,14 @@ if( have_posts() ) {
         <article class="u-alert grid-item item-s-12"><?php _e('Sorry, no posts matched your criteria :{'); ?></article>
 <?php
 } ?>
-      
+
       </div>
     </div>
   </section>
 
   <?php get_template_part('partials/pagination'); ?>
+ */
+?>
 
 </main>
 
