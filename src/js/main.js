@@ -170,6 +170,8 @@ Site.Map = {
 
     console.log(_this.mapPosition);
 
+    // TODO: Imporve following conditions to avoid going beyond the map
+
     // Move up
     if (_this.pan.up) {
       console.log('up');
