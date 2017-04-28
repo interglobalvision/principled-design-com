@@ -33,7 +33,7 @@ Site = {
 };
 
 Site.Map = {
-  panZoneSize: 50, // in pixels
+  panZoneSize: 100, // in pixels
   panning: false,
   pan: {
     up: false,
@@ -168,36 +168,24 @@ Site.Map = {
       _this.mapPosition = _this.getMapPosition();
     }
 
-    console.log(_this.mapPosition);
-
-    // TODO: Imporve following conditions to avoid going beyond the map
-
     // Move up
-    if (_this.pan.up) {
-      console.log('up');
+    if (_this.pan.up && _this.mapPosition[5] <= 0) {
       _this.mapPosition[5] = _this.mapPosition[5] + 1;
-      console.log(_this.mapPosition[5]);
     }
 
     // Move down
-    if (_this.pan.down) {
-      console.log('down');
+    if (_this.pan.down && _this.mapPosition[5] >= (_this.window.height * -2)) {
       _this.mapPosition[5] = _this.mapPosition[5] - 1;
-      console.log(_this.mapPosition[5]);
     }
 
     // Move left
-    if (_this.pan.left) {
-      console.log('left');
+    if (_this.pan.left && _this.mapPosition[4] <= 0) {
       _this.mapPosition[4] = _this.mapPosition[4] + 1;
-      console.log(_this.mapPosition[4]);
     }
 
     // Move right
-    if (_this.pan.right) {
-      console.log('right');
+    if (_this.pan.right && _this.mapPosition[4] >= (_this.window.width * -2)) {
       _this.mapPosition[4] = _this.mapPosition[4] - 1;
-      console.log(_this.mapPosition[4]);
     }
 
     _this.map.style.transform = 'matrix(' + _this.mapPosition.toString() + ')';
