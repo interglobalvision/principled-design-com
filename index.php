@@ -6,6 +6,10 @@ get_header();
 
 <?php /*
 <main id="main-content">
+  <?php get_template_part('partials/map'); ?>
+
+<?php
+/*
   <section id="posts">
     <div class="container">
       <div class="grid-row">
@@ -37,6 +41,8 @@ if( have_posts() ) {
   </section>
 
   <?php get_template_part('partials/pagination'); ?>
+ */
+?>
 
 </main>
 */ ?>
