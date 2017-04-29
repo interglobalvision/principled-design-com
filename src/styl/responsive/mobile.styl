@@ -38,6 +38,7 @@
 
 #background-shape
   z-index: -100
+  transition: background-color $transition-duration
   path
     stroke-width: 0
     fill: $color-white
@@ -72,6 +73,12 @@
       stroke: $color-white
       stroke-width: $stroke-width
   &.shape-state-6
+    background-color: $color-blue
+    path
+      fill: $color-blue
+      stroke: $color-white
+      stroke-width: 1px
+  &.shape-state-7
     path
       fill: $color-red
       stroke: $color-red
