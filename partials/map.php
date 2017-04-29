@@ -1,6 +1,6 @@
 <div id="map">
   <?php
-    get_template_part('partials/tiled-bg.svg');
+    get_template_part('partials/background-shape');
   ?>
   <div class="map-block">
     <div class="map-block-content">
