@@ -94,59 +94,6 @@ img
 
 // ******************************************************
 
-// BACKGROUND SHAPES
-
-.background-shape
-  position: fixed
-  top: 0
-  left: 0
-  width: 100vw
-  height: 100vh
-  z-index: -100
-  path
-    stroke-width: 0
-    fill: #FFF
-    stroke: #FFF
-    stroke-miterlimit: 10
-    stroke-dasharray: 1200
-    stroke-dashoffset: 0
-    transition:
-      fill $transition-duration,
-      stroke $transition-duration,
-      stroke-width $transition-duration,
-      stroke-dasharray $transition-duration,
-      stroke-dashoffset $transition-duration
-  &.shape-state-1
-    path
-      fill: $color-blue
-      stroke: $color-blue
-  &.shape-state-2
-    path
-      fill: $color-white
-      stroke: $color-red
-      stroke-width: $stroke-width
-      stroke-dashoffset: 400
-  &.shape-state-3
-    path
-      fill: $color-yellow
-      stroke: $color-yellow
-  &.shape-state-4
-    path
-      fill: $color-white
-      stroke: $color-yellow
-      stroke-width: $stroke-width
-  &.shape-state-5
-    path
-      fill: $color-grey
-      stroke: $color-white
-      stroke-width: $stroke-width
-  &.shape-state-6
-    path
-      fill: $color-red
-      stroke: $color-red
-
-// ******************************************************
-
 // MEDIA QUERIES
 
 $gutter = 14px
