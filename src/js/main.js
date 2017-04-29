@@ -199,9 +199,6 @@ Site.Map = {
       return true;
     }
 
-    console.log('animating');
-
-
     // Get current map position
     if (!_this.mapPosition) {
       _this.mapPosition = _this.getMapPosition();
