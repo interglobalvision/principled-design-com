@@ -65,7 +65,7 @@ Site.Shapes = {
   setState: function() {
     var _this = this;
 
-    $('.background-shape')
+    $('#background-shape')
     .removeClass('shape-state-' + _this.currentState)
     .addClass('shape-state-' + _this.nextState());
   },
