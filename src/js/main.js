@@ -11,8 +11,8 @@ Site = {
     });
 
     $(document).ready(function () {
+      Site.Shapes.init();
       Site.Map.init();
-
     });
 
   },
@@ -29,6 +29,45 @@ Site = {
       string = string.replace(/ ([^ ]*)$/,'&nbsp;$1');
       $(this).html(string);
     });
+  },
+};
+
+Site.Shapes = {
+  currentState: 0,
+  maxState: 7,
+  timer: null,
+  interval: 7000,
+  init: function() {
+    var _this = this;
+
+    _this.setState();
+    _this.startInterval();
+  },
+
+  startInterval: function() {
+    var _this = this;
+
+    _this.timer = setInterval(function() {_this.setState();}, _this.interval);
+  },
+
+  nextState: function() {
+    var _this = this;
+
+    _this.currentState++;
+
+    if (_this.currentState > _this.maxState) {
+      _this.currentState = 1;
+    }
+
+    return _this.currentState;
+  },
+
+  setState: function() {
+    var _this = this;
+
+    $('#background-shape')
+    .removeClass('shape-state-' + _this.currentState)
+    .addClass('shape-state-' + _this.nextState());
   },
 };
 
@@ -160,9 +199,6 @@ Site.Map = {
       return true;
     }
 
-    console.log('animating');
-
-
     // Get current map position
     if (!_this.mapPosition) {
       _this.mapPosition = _this.getMapPosition();
@@ -207,7 +243,6 @@ Site.Map = {
     return transformMatrix = transformMatrix.split(', ').map( function(item) {
           return parseInt(item, 10);
     });; // Returns an array like [0,0,0,0,0,0]
-
   },
 };
 

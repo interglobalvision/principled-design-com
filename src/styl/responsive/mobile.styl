@@ -1,3 +1,5 @@
+// MAP
+
 #map
   width: 300vw
   height: 300vh
@@ -12,10 +14,81 @@
   transition: transform 100ms
 
 .map-block
+  position: relative
   width: 100vw
   height: 100vh
-  border: 1px solid red
   display: flex
   align-items: center
   justify-content: center
   font-size: 10em
+
+// ******************************************************
+
+// BACKGROUND SHAPES
+
+#background-shape-holder
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  display: flex
+  justify-content: center
+  align-items: center
+
+#background-shape
+  z-index: -100
+  transition: background-color $transition-duration
+  path
+    stroke-width: 0
+    fill: $color-white
+    stroke: $color-white
+    stroke-width: 0
+    stroke-miterlimit: 10
+    transition:
+      fill $transition-duration,
+      stroke $transition-duration,
+      stroke-width $transition-duration
+  &.shape-state-1
+    path
+      fill: $color-blue
+      stroke: $color-blue
+  &.shape-state-2
+    path
+      fill: $color-white
+      stroke: $color-red
+      stroke-width: $stroke-width
+  &.shape-state-3
+    path
+      fill: $color-yellow
+      stroke: $color-yellow
+  &.shape-state-4
+    path
+      fill: $color-white
+      stroke: $color-yellow
+      stroke-width: $stroke-width
+  &.shape-state-5
+    path
+      fill: $color-grey
+      stroke: $color-white
+      stroke-width: $stroke-width
+  &.shape-state-6
+    background-color: $color-blue
+    path
+      fill: $color-blue
+      stroke: $color-white
+      stroke-width: 1px
+  &.shape-state-7
+    path
+      fill: $color-red
+      stroke: $color-red
+
+@media screen and (orientation: landscape)
+  #background-shape
+    width: 100%
+
+@media screen and (orientation: portrait)
+  #background-shape
+    height: 100%
+
+// ******************************************************

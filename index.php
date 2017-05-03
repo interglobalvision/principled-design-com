@@ -3,7 +3,9 @@ get_header();
 ?>
 
 <main id="main-content">
-  <?php get_template_part('partials/map'); ?>
+  <?php
+    get_template_part('partials/map');
+  ?>
 
 <?php
 /*

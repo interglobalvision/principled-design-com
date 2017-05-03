@@ -1,4 +1,7 @@
 <div id="map">
+  <?php
+    get_template_part('partials/background-shape');
+  ?>
   <div class="map-block">
     <div class="map-block-content">
       <p>1</p>
