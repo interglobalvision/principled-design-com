@@ -36,7 +36,7 @@ Site.Shapes = {
   currentState: 0,
   maxState: 7,
   timer: null,
-  interval: 7000,
+  interval: 12000,
   init: function() {
     var _this = this;
 
