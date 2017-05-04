@@ -14,12 +14,12 @@
   </div>
   <div class="map-block">
     <div class="map-block-content">
-      <p>3</p>
+      <img src="http://lorempixel.com/output/technics-q-c-640-480-4.jpg">
     </div>
   </div>
   <div class="map-block">
     <div class="map-block-content">
-      <p>4</p>
+      <img src="http://lorempixel.com/output/technics-q-c-640-480-7.jpg">
     </div>
   </div>
   <div class="map-block">
@@ -44,7 +44,7 @@
   </div>
   <div class="map-block">
     <div class="map-block-content">
-      <p>9</p>
+      <img src="http://lorempixel.com/output/technics-q-c-640-480-10.jpg">
     </div>
   </div>
 </div>
