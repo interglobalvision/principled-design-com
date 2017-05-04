@@ -1,3 +1,11 @@
+// HEADER
+
+#header
+  position: fixed
+  z-index: 200
+
+// ******************************************************
+
 // MAP
 
 #map
@@ -10,8 +18,9 @@
   left: 0
   display: flex
   flex-wrap: wrap
-  transform: translate(-33.3333333%,-33.333333%)
+  transform: translate(-33.3333333%, -33.333333%)
   transition: transform 100ms
+  z-index: 100
 
 .map-block
   position: relative
@@ -21,6 +30,7 @@
   align-items: center
   justify-content: center
   font-size: 10em
+  z-index: 100
 
 // ******************************************************
 
@@ -35,9 +45,10 @@
   display: flex
   justify-content: center
   align-items: center
+  z-index: 0
 
 #background-shape
-  z-index: -100
+  z-index: 0
   transition: background-color $transition-duration
   path
     stroke-width: 0
@@ -45,10 +56,8 @@
     stroke: $color-white
     stroke-width: 0
     stroke-miterlimit: 10
-    transition:
-      fill $transition-duration,
-      stroke $transition-duration,
-      stroke-width $transition-duration
+    stroke-linejoin: round
+    transition: fill $transition-duration, stroke $transition-duration, stroke-width $transition-duration
   &.shape-state-1
     path
       fill: $color-blue
