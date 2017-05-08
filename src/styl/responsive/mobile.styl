@@ -1,8 +1,9 @@
 // CONTENT
 
-#main-container
+$menu-width = 250px
+
+#header
   position: fixed
-  display: flex
   padding: $margin-small
   z-index: 200
 
@@ -20,14 +21,22 @@
 
 #header
   display: flex
-  width: 250px
+  width: $menu-width
   flex-direction: column
+
+$main-content-offset = $margin-small + $margin-mid
+
+#main-content-container
+  position: fixed
+  width: 'calc(100vw - %s)' % ($menu-width + $margin-small)
+  left: $menu-width + $margin-small
+  height: 100vh
+  z-index: 200
+  padding-top: $main-content-offset
+  overflow-y: scroll
 
 #main-content
   width: 360px
-  height: 'calc(100vh - %s)' % $margin-small
-  padding-top: $margin-mid
-  overflow-y: scroll
 
 // ******************************************************
 

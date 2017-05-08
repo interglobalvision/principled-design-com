@@ -1,7 +1,8 @@
 <?php
 get_header();
 ?>
-<main id="main-content">
+<main id="main-content-container">
+  <div id="main-content">
   <p>Principled Design is a design and development studio based in New York city specializing in wearable technology and e-textile solutions. We work closely with our clients to develop holistic solutions that address this complex ecosystem including concept and materiathlse scroll for the text clicking on the menu items expands the menu and shows the content development, seamless integration of electronics into fabrics, textile and apparel design, aswell as adoption by end-users.</p>
   <p>Our services span from concept development all the way to design-for-manufacturing, sourcing of materials and components, facilitating strategic partnerships, and coordinating item — all sections</p>
   <p>With over 18 years of experience in the wearables and e-textiles space we have built an extensive network of partners and collabora- tors in both industry and academia and have developed a unique approach to leverage the expertise and capabilities of our network. Our methodology enables joined up thinking and the development of a common language between the various players that comprise the intricate world of wearable and e-textile systems. production with manufacturers both domestically and overseas.</p>
@@ -42,7 +43,7 @@ if( have_posts() ) {
   <?php get_template_part('partials/pagination'); ?>
  */
 ?>
-
+  </div>
 </main>
 <?php
 get_footer();

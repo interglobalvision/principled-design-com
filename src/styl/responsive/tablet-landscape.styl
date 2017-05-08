@@ -1,12 +1,39 @@
 // CONTENT
 
-#main-container
+$menu-width = 250px
+
+#header
+  position: fixed
   padding: $margin-basic
+  z-index: 200
 
 #header-name
   height: $margin-mid
 
+.header-menu-item
+  cursor: pointer
+
+.header-menu-active
+  &:after
+    display: block
+    padding: .7rem 0
+    content: '➞'
+
+#header
+  display: flex
+  width: $menu-width
+  flex-direction: column
+
+$main-content-offset = $margin-basic + $margin-mid
+
+#main-content-container
+  position: fixed
+  width: 'calc(100vw - %s)' % ($menu-width + $margin-basic)
+  left: $menu-width + $margin-basic
+  height: 100vh
+  z-index: 200
+  padding-top: $main-content-offset
+  overflow-y: scroll
+
 #main-content
-  width: 420px
-  height: 'calc(100vh - %s)' % $margin-basic
-  padding-top: $margin-mid
+  width: 410px
