@@ -27,7 +27,7 @@
 
 <section id="main-container">
   <nav id="header" class="font-bold">
-    <h1 id="header-name"><a href="<?php echo home_url(); ?>"><?php bloginfo('name'); ?></a></h1>
+    <h1 id="header-name"><?php bloginfo('name'); ?></h1>
     <ul id="header-menu">
       <li class="header-menu-item">About</li>
       <li class="header-menu-item">Services</li>
