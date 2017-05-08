@@ -29,11 +29,11 @@
   <nav id="header" class="font-bold">
     <h1 id="header-name"><a href="<?php echo home_url(); ?>"><?php bloginfo('name'); ?></a></h1>
     <ul id="header-menu">
-      <li>About</li>
-      <li>Services</li>
-      <li class="header-menu-active">Open Innovation Group</li>
-      <li>Selected Clients</li>
-      <li>ConnexI/O</li>
-      <li>Contact</li>
+      <li class="header-menu-item">About</li>
+      <li class="header-menu-item">Services</li>
+      <li class="header-menu-item header-menu-active">Open Innovation Group</li>
+      <li class="header-menu-item">Selected Clients</li>
+      <li class="header-menu-item">ConnexI/O</li>
+      <li class="header-menu-item">Contact</li>
     </ul>
   </nav>
