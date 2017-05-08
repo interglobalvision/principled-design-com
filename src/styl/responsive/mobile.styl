@@ -1,8 +1,30 @@
-// HEADER
+// CONTENT
+
+#main-container
+  position: fixed
+  display: flex
+  padding: $margin-small
+  z-index: 200
+
+#header-name
+  height: $margin-mid
+
+.header-menu-active
+  &:after
+    display: block
+    padding: .7rem 0
+    content: '➞'
 
 #header
-  position: fixed
-  z-index: 200
+  display: flex
+  width: 250px
+  flex-direction: column
+
+#main-content
+  width: 360px
+  height: 'calc(100vh - %s)' % $margin-small
+  padding-top: $margin-mid
+  overflow-y: scroll
 
 // ******************************************************
 

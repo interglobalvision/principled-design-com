@@ -31,11 +31,11 @@ normalize()
 
 $font-size-larger = 1.3rem
 
-$font-leading-basic = 1.35
-$font-leading-tighter = 1.15
-$font-leading-larger = 1.45
+$font-leading-basic = 1.5
+$font-leading-tighter = 1.35
+$font-leading-larger = 1.65
 
-$font-tracking-basic = .001em
+$font-tracking-basic = .01em
 $font-tracking-wider = .05em
 
 html
@@ -105,16 +105,13 @@ $margin-basic = ($gutter * 2)
 $margin-mid = ($gutter * 3.5)
 $margin-large = ($gutter * 5)
 
-$font-size-basic = 12px
-$font-size-h1 = 28px
-$font-size-h2 = 21px
-$font-size-h3 = 16px
+$font-size-basic = 17px
 
 grid(96%, $gutter, s)
 
 space-maker($margin-micro, $margin-tiny, $margin-small, $margin-basic, $margin-mid, $margin-large)
 
-font-sizes($font-size-basic, $font-size-h1, $font-size-h2, $font-size-h3)
+font-sizes($font-size-basic)
 
 @import 'responsive/mobile'
 
@@ -129,7 +126,7 @@ font-sizes($font-size-basic, $font-size-h1, $font-size-h2, $font-size-h3)
   $margin-mid = ($gutter * 3.5)
   $margin-large = ($gutter * 5)
 
-  $font-size-basic = 14px
+  $font-size-basic = 19px
 
   space-maker($margin-micro, $margin-tiny, $margin-small, $margin-basic, $margin-mid, $margin-large)
 
@@ -153,7 +150,7 @@ font-sizes($font-size-basic, $font-size-h1, $font-size-h2, $font-size-h3)
   $margin-mid = ($gutter * 3.5)
   $margin-large = ($gutter * 5)
 
-  $font-size-basic = 16px
+  $font-size-basic = 20px
 
   grid(1000px, $gutter, l)
 
