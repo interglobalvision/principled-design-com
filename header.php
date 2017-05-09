@@ -26,7 +26,14 @@
 <!--[if lt IE 9]><p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p><![endif]-->
 
 <section id="main-container">
-
-  <header id="header">
-    <h1><a href="<?php echo home_url(); ?>"><?php bloginfo('name'); ?></a></h1>
-  </header>
+  <nav id="header" class="font-bold">
+    <h1 id="header-name"><?php bloginfo('name'); ?></h1>
+    <ul id="header-menu">
+      <li class="header-menu-item"><a href="#">About</a></li>
+      <li class="header-menu-item"><a href="#">Services</a></li>
+      <li class="header-menu-item header-menu-active"><a href="#">Open Innovation Group</a></li>
+      <li class="header-menu-item"><a href="#">Selected Clients</a></li>
+      <li class="header-menu-item"><a href="#">ConnexI/O</a></li>
+      <li class="header-menu-item"><a href="#">Contact</a></li>
+    </ul>
+  </nav>

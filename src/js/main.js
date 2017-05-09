@@ -6,6 +6,8 @@ Site = {
   init: function() {
     var _this = this;
 
+    Site.Menu.init();
+
     $(window).resize(function(){
       _this.onResize();
     });
@@ -30,6 +32,30 @@ Site = {
       $(this).html(string);
     });
   },
+};
+
+Site.Menu = {
+  $headerItems: $('.header-menu-item'),
+  init: function() {
+    var _this = this;
+
+    _this.bind();
+  },
+
+  bind: function() {
+    var _this = this;
+
+    _this.$headerItems.on('click', function(e) {
+      _this.onItemClick(this, e);
+    });
+  },
+
+  onItemClick: function(item, event) {
+    var _this = this;
+
+    $('.header-menu-active').removeClass('header-menu-active');
+    $(item).addClass('header-menu-active');
+  }
 };
 
 Site.Shapes = {
