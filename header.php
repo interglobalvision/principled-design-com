@@ -28,12 +28,33 @@
 <section id="main-container">
   <nav id="header" class="font-bold">
     <h1 id="header-name"><?php bloginfo('name'); ?></h1>
+
+<?php
+$args = array(
+	'post_type'      => array( 'page' ),
+	'posts_per_page' => '-1',
+);
+
+$query = new WP_Query( $args );
+
+if ( $query->have_posts() ) {
+?>
     <ul id="header-menu">
-      <li class="header-menu-item"><a href="#">About</a></li>
-      <li class="header-menu-item"><a href="#">Services</a></li>
-      <li class="header-menu-item header-menu-active"><a href="#">Open Innovation Group</a></li>
-      <li class="header-menu-item"><a href="#">Selected Clients</a></li>
-      <li class="header-menu-item"><a href="#">ConnexI/O</a></li>
-      <li class="header-menu-item"><a href="#">Contact</a></li>
+<?php
+	while ( $query->have_posts() ) {
+		$query->the_post();
+?>
+
+      <li class="header-menu-item"><a href="#<?php echo $post->post_name; ?>"><?php the_title(); ?></a></li>
+
+<?php
+  }
+?>
     </ul>
+<?php
+}
+
+wp_reset_postdata();
+?>
+
   </nav>
