@@ -127,6 +127,8 @@ Site.Map = {
     // bind mouse position
     document.addEventListener('mousemove', _this.handleMouseMove.bind(_this));
 
+    // detect mouse outside window
+    document.body.addEventListener('mouseleave', _this.noPan.bind(_this));
   },
 
   getWindowSize: function() {
@@ -232,22 +234,22 @@ Site.Map = {
 
     // Move up
     if (_this.pan.up && _this.mapPosition[5] <= 0) {
-      _this.mapPosition[5] = _this.mapPosition[5] + 1;
+      _this.mapPosition[5] = _this.mapPosition[5] + 0.1;
     }
 
     // Move down
     if (_this.pan.down && _this.mapPosition[5] >= (_this.window.height * -2)) {
-      _this.mapPosition[5] = _this.mapPosition[5] - 1;
+      _this.mapPosition[5] = _this.mapPosition[5] - 0.1;
     }
 
     // Move left
     if (_this.pan.left && _this.mapPosition[4] <= 0) {
-      _this.mapPosition[4] = _this.mapPosition[4] + 1;
+      _this.mapPosition[4] = _this.mapPosition[4] + 0.1;
     }
 
     // Move right
     if (_this.pan.right && _this.mapPosition[4] >= (_this.window.width * -2)) {
-      _this.mapPosition[4] = _this.mapPosition[4] - 1;
+      _this.mapPosition[4] = _this.mapPosition[4] - 0.1;
     }
 
     _this.map.style.transform = 'matrix(' + _this.mapPosition.toString() + ')';
