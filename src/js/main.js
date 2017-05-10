@@ -99,6 +99,8 @@ Site.Shapes = {
 
 Site.Map = {
   panZoneSize: 100, // in pixels
+  distanceThreshold: 80, // percent of longest axis
+  thresholdRadious: false,
   panning: false,
   pan: {
     up: false,
@@ -107,6 +109,14 @@ Site.Map = {
     right: false,
   },
   window: {
+    width: 0,
+    height: 0,
+  },
+  mouse: {
+    x: 0,
+    y: 0,
+  },
+  center: {
     width: 0,
     height: 0,
   },
@@ -136,40 +146,29 @@ Site.Map = {
 
     _this.window.width = window.innerWidth;
     _this.window.height = window.innerHeight;
+    _this.window.center = {
+      x: _this.window.width / 2,
+      y: _this.window.height / 2,
+    };
+
   },
 
   setPanZones: function() {
     var _this =  this;
 
-    // Get window dimensions
-    var windowWidth = window.innerWidth;
-    var windowHeight = window.innerHeight;
-
-    // Set
-    _this.panZones = {
-      up: {
-        min: 0,
-        max: _this.panZoneSize,
-      },
-      down: {
-        min: windowHeight - _this.panZoneSize,
-        max: windowHeight,
-      },
-      left: {
-        min: 0,
-        max: _this.panZoneSize,
-      },
-      right: {
-        min: windowWidth - _this.panZoneSize,
-        max: windowWidth,
-      },
-    };
+    // Set threshold
+    if (_this.window.height / _this.window.width <= 1) { // Horizontal major axis or same size axis
+      _this.thresholdRadious = _this.window.height * (_this.distanceThreshold/100) / 2;
+    } else if (_this.window.width / _this.window.height > 1) { // Vertical major axis
+      _this.thresholdRadious = _this.window.width * (_this.distanceThreshold/100) / 2;
+    }
 
   },
 
   handleMouseMove: function(event) {
     var _this =  this;
 
+    /*
     var posX = event.clientX;
     var posY = event.clientY;
 
@@ -180,7 +179,7 @@ Site.Map = {
     } else {
       _this.panning = true;
 
-      // Check inside which zones
+    // Check inside which zones
       if (posY >= _this.panZones.up.min && posY <= _this.panZones.up.max) { //up
         _this.pan.up = true;
       }
@@ -200,6 +199,13 @@ Site.Map = {
       _this.triggerAnimation();
     }
 
+*/
+
+    _this.mouse.x = event.clientX;
+    _this.mouse.y = event.clientY;
+
+    _this.triggerAnimation();
+
   },
 
   noPan: function() {
@@ -212,6 +218,8 @@ Site.Map = {
       right: false,
     };
 
+    _this.panning = false;
+
   },
 
   triggerAnimation: function() {
@@ -223,9 +231,29 @@ Site.Map = {
   animate: function() {
     var _this =  this;
 
-    if (!_this.panning) {
-      return true;
+    if (!_this.animate) {
+      return false;
     }
+
+    // Check if above threshold
+    if (_this.distanceFromCenter() > _this.thresholdRadious) {
+      var angle = _this.angleFromCenter();
+      var distance = ( _this.distanceFromCenter() - _this.thresholdRadious) * 0.01;
+
+      if (!_this.mapPosition) {
+        _this.mapPosition = _this.getMapPosition();
+      }
+
+      _this.mapPosition[4] += distance * Math.cos(angle)
+      _this.mapPosition[5] += distance * Math.sin(angle)
+
+      _this.map.style.transform = 'matrix(' + _this.mapPosition.toString() + ')';
+
+      window.requestAnimationFrame(_this.animate.bind(_this));
+
+    }
+
+    /*
 
     // Get current map position
     if (!_this.mapPosition) {
@@ -253,9 +281,38 @@ Site.Map = {
     }
 
     _this.map.style.transform = 'matrix(' + _this.mapPosition.toString() + ')';
+    */
 
-    window.requestAnimationFrame(_this.animate.bind(_this));
+    //console.log('angleFromCenter', _this.angleFromCenter());
 
+
+  },
+
+  distanceFromCenter: function() {
+    var _this = this;
+
+    var xs = Math.pow(_this.window.center.x - _this.mouse.x, 2);
+    var ys = Math.pow(_this.window.center.y - _this.mouse.y, 2);
+    var distance = Math.sqrt(xs + ys);
+
+    return distance;
+  },
+
+  angleFromCenter: function() {
+    var _this = this;
+
+    var dy = _this.window.center.y - this.mouse.y;
+    var dx = _this.window.center.x - this.mouse.x;
+
+    var theta = Math.atan2(dy, dx); // range (-PI, PI]
+
+    theta *= 180 / Math.PI; // rads to degs, range (-180, 180]
+
+    if (theta < 0) {
+      theta = 360 + theta; // range [0, 360)
+    }
+
+    return theta;
   },
 
   getMapPosition: function() {
@@ -269,9 +326,9 @@ Site.Map = {
 
     // Make it into an array
     return transformMatrix = transformMatrix.split(', ').map( function(item) {
-          return parseInt(item, 10);
-    });; // Returns an array like [0,0,0,0,0,0]
-  },
+      return parseInt(item, 10);
+    }); // Returns an array like [0,0,0,0,0,0]
+  }
 };
 
 Site.init();
