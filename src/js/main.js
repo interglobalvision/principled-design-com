@@ -99,27 +99,11 @@ Site.Shapes = {
 
 Site.Map = {
   panZoneSize: 100, // in pixels
-  distanceThreshold: 80, // percent of longest axis
-  thresholdRadious: false,
-  panning: false,
-  pan: {
-    up: false,
-    down: false,
-    left: false,
-    right: false,
-  },
-  window: {
-    width: 0,
-    height: 0,
-  },
-  mouse: {
-    x: 0,
-    y: 0,
-  },
-  center: {
-    width: 0,
-    height: 0,
-  },
+  panSpeed: 0.04,
+  panning: false, // is it panning or not?
+  window: {},
+  center: {},
+  mouse: {},
   mapPosition: false,
 
   init: function() {
@@ -134,18 +118,23 @@ Site.Map = {
     // init pan zones
     _this.setPanZones();
 
-    // bind mouse position
+    // Bind mouse position
     document.addEventListener('mousemove', _this.handleMouseMove.bind(_this));
 
-    // detect mouse outside window
-    document.body.addEventListener('mouseleave', _this.noPan.bind(_this));
+    // Detect mouse outside window
+    document.body.addEventListener('mouseleave', _this.stopPanning.bind(_this));
   },
 
   getWindowSize: function() {
     var _this =  this;
 
-    _this.window.width = window.innerWidth;
-    _this.window.height = window.innerHeight;
+    // Save window size
+    _this.window = {
+      width: window.innerWidth,
+      height: window.innerHeight,
+    };
+
+    // Save window center
     _this.window.center = {
       x: _this.window.width / 2,
       y: _this.window.height / 2,
@@ -153,141 +142,150 @@ Site.Map = {
 
   },
 
+  // Set Up, Left, Down and Right pan zones based on window size
   setPanZones: function() {
     var _this =  this;
 
-    // Set threshold
-    if (_this.window.height / _this.window.width <= 1) { // Horizontal major axis or same size axis
-      _this.thresholdRadious = _this.window.height * (_this.distanceThreshold/100) / 2;
-    } else if (_this.window.width / _this.window.height > 1) { // Vertical major axis
-      _this.thresholdRadious = _this.window.width * (_this.distanceThreshold/100) / 2;
-    }
+    _this.panZones = {
+      up: {
+        min: 0,
+        max: _this.panZoneSize,
+      },
+      down: {
+        min: _this.window.height - _this.panZoneSize,
+        max: _this.window.height,
+      },
+      left: {
+        min: 0,
+        max: _this.panZoneSize,
+      },
+      right: {
+        min: _this.window.width - _this.panZoneSize,
+        max: _this.window.width,
+      },
+    };
 
   },
 
   handleMouseMove: function(event) {
     var _this =  this;
 
-    /*
-    var posX = event.clientX;
-    var posY = event.clientY;
-
-    _this.noPan();
-
-    if (posY > _this.panZones.up.max && posY < _this.panZones.down.min && posX > _this.panZones.left.max && posX < _this.panZones.right.min) { // not in a zone
-      _this.panning = false;
-    } else {
-      _this.panning = true;
-
-    // Check inside which zones
-      if (posY >= _this.panZones.up.min && posY <= _this.panZones.up.max) { //up
-        _this.pan.up = true;
-      }
-
-      if (posY >= _this.panZones.down.min && posY <= _this.panZones.down.max) { //down
-        _this.pan.down = true;
-      }
-
-      if (posX >= _this.panZones.left.min && posX <= _this.panZones.left.max) { //left
-        _this.pan.left = true;
-      }
-
-      if (posX >= _this.panZones.right.min && posX <= _this.panZones.right.max) { //right
-        _this.pan.right = true;
-      }
-
-      _this.triggerAnimation();
-    }
-
-*/
-
+    // Save mouse position
     _this.mouse.x = event.clientX;
     _this.mouse.y = event.clientY;
 
-    _this.triggerAnimation();
+    if (!_this.isInsidePanZone()) { // If outside pan zones
+      _this.stopPanning(); // Stop animation
+    } else if(!_this.panning) { // If inside and not panning already
+      _this.triggerPanning(); // Trigger animation
+    }
 
   },
 
-  noPan: function() {
+  stopPanning: function() {
     var _this =  this;
-
-    _this.pan =  {
-      up: false,
-      down: false,
-      left: false,
-      right: false,
-    };
 
     _this.panning = false;
-
   },
 
-  triggerAnimation: function() {
+  // (Bool) check if mouse is inside any pan zone
+  isInsidePanZone: function() {
     var _this =  this;
 
-    window.requestAnimationFrame(_this.animate.bind(_this));
+    var posX = _this.mouse.x;
+    var posY = _this.mouse.y;
+
+    if ( (posX >= _this.panZones.left.min && posX <= _this.panZones.left.max) || // Left
+      (posX >= _this.panZones.right.min && posX <= _this.panZones.right.max) || // Right
+      (posY >= _this.panZones.up.min && posY <= _this.panZones.up.max) || // Up
+      (posY >= _this.panZones.down.min && posY <= _this.panZones.down.max) ) { //  Down
+
+        return true;
+      }
+
+    return false;
   },
 
-  animate: function() {
+  // Trigger panning animation
+  triggerPanning: function() {
     var _this =  this;
 
-    if (!_this.animate) {
+    _this.panning = true;
+
+    window.requestAnimationFrame(_this.pan.bind(_this));
+  },
+
+  // Main panning logic
+  pan: function() {
+    var _this =  this;
+
+    // Check is panning has been stopped; we do this here to fail faster
+    if (!_this.panning) {
       return false;
     }
 
-    // Check if above threshold
-    if (_this.distanceFromCenter() > _this.thresholdRadious) {
-      var angle = _this.angleFromCenter();
-      var distance = ( _this.distanceFromCenter() - _this.thresholdRadious) * 0.01;
+    // Get the angle between center and mouse position
+    var angle = _this.angleFromCenter();
 
-      if (!_this.mapPosition) {
-        _this.mapPosition = _this.getMapPosition();
-      }
+    // Get distance between center and mouse position
+    var distance = _this.distanceFromCenter() * _this.panSpeed;
 
-      _this.mapPosition[4] += distance * Math.cos(angle)
-      _this.mapPosition[5] += distance * Math.sin(angle)
-
-      _this.map.style.transform = 'matrix(' + _this.mapPosition.toString() + ')';
-
-      window.requestAnimationFrame(_this.animate.bind(_this));
-
-    }
-
-    /*
-
-    // Get current map position
+    // If we don't know the map's current postion we get it
     if (!_this.mapPosition) {
       _this.mapPosition = _this.getMapPosition();
     }
 
-    // Move up
-    if (_this.pan.up && _this.mapPosition[5] <= 0) {
-      _this.mapPosition[5] = _this.mapPosition[5] + 0.1;
+    // Get new coordinates based on the angle and the distance
+    var newX = _this.mapPosition[4] + (distance * Math.cos(angle));
+    var newY = _this.mapPosition[5] + (distance * Math.sin(angle));
+
+    // Check for left limit
+    if (newX >= 0) {
+      newX = 0;
     }
 
-    // Move down
-    if (_this.pan.down && _this.mapPosition[5] >= (_this.window.height * -2)) {
-      _this.mapPosition[5] = _this.mapPosition[5] - 0.1;
+    // Check for right limit
+    if (newX <= _this.window.width * -2) {
+      newX = _this.window.width * -2;
     }
 
-    // Move left
-    if (_this.pan.left && _this.mapPosition[4] <= 0) {
-      _this.mapPosition[4] = _this.mapPosition[4] + 0.1;
+    // Check for upper limit
+    if (newY >= 0) {
+      newY = 0;
     }
 
-    // Move right
-    if (_this.pan.right && _this.mapPosition[4] >= (_this.window.width * -2)) {
-      _this.mapPosition[4] = _this.mapPosition[4] - 0.1;
+    // Check for bottom limit
+    if (newY <= _this.window.height * -2) {
+      newY = _this.window.height * -2;
     }
 
-    _this.map.style.transform = 'matrix(' + _this.mapPosition.toString() + ')';
-    */
+    // Move the map
+    _this.moveMap(newX,newY);
 
-    //console.log('angleFromCenter', _this.angleFromCenter());
-
+    // Animate recursevly
+    window.requestAnimationFrame(_this.pan.bind(_this));
 
   },
 
+  // Move the map to given coordinates
+  moveMap: function(x,y) {
+    var _this =  this;
+
+    // If we don't know the map's current postion we get it
+    if (!_this.mapPosition) {
+      _this.mapPosition = _this.getMapPosition();
+    }
+
+    // Set new coordinates
+    _this.mapPosition[4] = x;
+    _this.mapPosition[5] = y;
+
+    // Apply new coordinates
+    _this.map.style.transform = 'matrix(' + _this.mapPosition.toString() + ')';
+
+  },
+
+  // Return distance between center and mouse positon in pixels
   distanceFromCenter: function() {
     var _this = this;
 
@@ -298,6 +296,7 @@ Site.Map = {
     return distance;
   },
 
+  // Return angle in rad from center of the window and mouse position relative to X-axis
   angleFromCenter: function() {
     var _this = this;
 
@@ -306,15 +305,10 @@ Site.Map = {
 
     var theta = Math.atan2(dy, dx); // range (-PI, PI]
 
-    theta *= 180 / Math.PI; // rads to degs, range (-180, 180]
-
-    if (theta < 0) {
-      theta = 360 + theta; // range [0, 360)
-    }
-
     return theta;
   },
 
+  // Return current map postion
   getMapPosition: function() {
     var _this =  this;
 
