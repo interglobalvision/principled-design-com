@@ -175,9 +175,9 @@ Site.Map = {
   handleMouseMove: function(event) {
     var _this =  this;
 
-      // Save mouse position
-      _this.mouse.x = event.clientX;
-      _this.mouse.y = event.clientY;
+    // Save mouse position
+    _this.mouse.x = event.clientX;
+    _this.mouse.y = event.clientY;
 
 
     if(_this.isInsidePanZone() && !_this.panning) {
