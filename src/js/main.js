@@ -170,13 +170,14 @@ Site.Map = {
   handleMouseMove: function(event) {
     var _this =  this;
 
-    // Save mouse position
-    _this.mouse.x = event.clientX;
-    _this.mouse.y = event.clientY;
+      // Save mouse position
+      _this.mouse.x = event.clientX;
+      _this.mouse.y = event.clientY;
 
-    if (!_this.isInsidePanZone()) { // If outside pan zones
+
+    if (_this.panning && !_this.isInsidePanZone() ) {
       _this.stopPanning(); // Stop animation
-    } else if(!_this.panning) { // If inside and not panning already
+    } else if(!_this.panning) {
       _this.triggerPanning(); // Trigger animation
     }
 
@@ -186,6 +187,8 @@ Site.Map = {
     var _this =  this;
 
     _this.panning = false;
+
+    _this.stopPanEvent();
   },
 
   // (Bool) check if mouse is inside any pan zone
@@ -212,7 +215,41 @@ Site.Map = {
 
     _this.panning = true;
 
+    _this.startPanEvent();
+
     window.requestAnimationFrame(_this.pan.bind(_this));
+  },
+
+  startPanEvent: function() {
+    var _this =  this;
+
+    var startPanEvent = new CustomEvent('startpan', {
+      map: {
+        position: {
+          x: _this.mapPosition[4],
+          y: _this.mapPosition[5],
+        },
+      },
+    });
+
+    _this.map.dispatchEvent(startPanEvent);
+
+  },
+
+  stopPanEvent: function() {
+    var _this =  this;
+
+    var stopPanEvent = new CustomEvent('stoppan', {
+      map: {
+        position: {
+          x: _this.mapPosition[4],
+          y: _this.mapPosition[5],
+        },
+      },
+    });
+
+    _this.map.dispatchEvent(stopPanEvent);
+
   },
 
   // Main panning logic
