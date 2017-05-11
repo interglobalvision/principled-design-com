@@ -175,10 +175,10 @@ Site.Map = {
       _this.mouse.y = event.clientY;
 
 
-    if (_this.panning && !_this.isInsidePanZone() ) {
-      _this.stopPanning(); // Stop animation
-    } else if(!_this.panning) {
+    if(_this.isInsidePanZone() && !_this.panning) {
       _this.triggerPanning(); // Trigger animation
+    } else if(_this.panning && !_this.isInsidePanZone()) {
+      _this.stopPanning(); // Stop animation
     }
 
   },
@@ -189,6 +189,7 @@ Site.Map = {
     _this.panning = false;
 
     _this.stopPanEvent();
+
   },
 
   // (Bool) check if mouse is inside any pan zone
@@ -207,6 +208,7 @@ Site.Map = {
       }
 
     return false;
+
   },
 
   // Trigger panning animation
@@ -218,6 +220,7 @@ Site.Map = {
     _this.startPanEvent();
 
     window.requestAnimationFrame(_this.pan.bind(_this));
+
   },
 
   startPanEvent: function() {
@@ -362,4 +365,6 @@ Site.Map = {
   }
 };
 
+document.querySelector('#map').addEventListener('stoppan', function() { console.log('stop');});
+document.querySelector('#map').addEventListener('startpan', function() { console.log('start');});
 Site.init();
