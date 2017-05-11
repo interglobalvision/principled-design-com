@@ -29,6 +29,14 @@ normalize()
 
 @import '../../globie-library/type'
 
+font-face('Calibre-Regular', './static/fonts/calibre/Calibre-Regular', 400, normal)
+font-face('Calibre-Medium', './static/fonts/calibre/Calibre-Medium', 500, normal)
+font-face('Calibre-Semibold', './static/fonts/calibre/Calibre-Semibold', 600, normal)
+font-face('Calibre-Bold', './static/fonts/calibre/Calibre-Bold', 700, normal)
+
+$font-sans = 'Calibre-Medium', font-stack('Helvetica');
+$font-serif = font-stack('Georgia');
+
 $font-size-larger = 1.3rem
 
 $font-leading-basic = 1.5
@@ -44,12 +52,20 @@ html
 
 body
   line-height: $font-leading-basic
+  font-weight: 500
 
 .font-sans
   font-family: $font-sans
 
 .font-serif
   font-family: $font-serif
+
+em, .font-italic
+  font-style: normal
+
+strong, .font-bold
+  font-family: 'Calibre-Semibold', font-stack('Helvetica');
+  font-weight: 600
 
 .font-larger
   font-size: $font-size-larger
@@ -132,7 +148,7 @@ font-sizes($font-size-basic)
 
   grid(680px, $gutter, m)
 
-  font-size($font-size-basic)
+  font-sizes($font-size-basic)
 
   .mobile-only
     display: none !important
@@ -156,7 +172,7 @@ font-sizes($font-size-basic)
 
   space-maker($margin-micro, $margin-tiny, $margin-small, $margin-basic, $margin-mid, $margin-large)
 
-  font-size($font-size-basic)
+  font-sizes($font-size-basic)
 
   .desktop-only
     display: initial !important
