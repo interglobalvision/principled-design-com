@@ -52,10 +52,15 @@ Site.Menu = {
 
   onItemClick: function(item, event) {
     var _this = this;
+    var href = $(item).children('a').attr('href');
+    var hash = href.substr(1);
 
     $('.header-menu-active').removeClass('header-menu-active');
     $(item).addClass('header-menu-active');
-  }
+
+    $('.page-content').removeClass('page-content-active');
+    $('.page-content[data-slug="' + hash + '"]').addClass('page-content-active');
+  },
 };
 
 Site.Shapes = {
