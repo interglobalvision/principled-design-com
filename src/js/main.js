@@ -227,10 +227,12 @@ Site.Map = {
     var _this =  this;
 
     var startPanEvent = new CustomEvent('startpan', {
-      map: {
-        position: {
-          x: _this.mapPosition[4],
-          y: _this.mapPosition[5],
+      detail: {
+        map: {
+          position: {
+            x: _this.mapPosition[4],
+            y: _this.mapPosition[5],
+          },
         },
       },
     });
@@ -243,10 +245,12 @@ Site.Map = {
     var _this =  this;
 
     var stopPanEvent = new CustomEvent('stoppan', {
-      map: {
-        position: {
-          x: _this.mapPosition[4],
-          y: _this.mapPosition[5],
+      detail: {
+        map: {
+          position: {
+            x: _this.mapPosition[4],
+            y: _this.mapPosition[5],
+          },
         },
       },
     });
@@ -365,6 +369,4 @@ Site.Map = {
   }
 };
 
-document.querySelector('#map').addEventListener('stoppan', function() { console.log('stop');});
-document.querySelector('#map').addEventListener('startpan', function() { console.log('start');});
 Site.init();
