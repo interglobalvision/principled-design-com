@@ -227,17 +227,17 @@ Site.Map = {
     // Get the angle between center and mouse position
     var angle = _this.angleFromCenter();
 
-    // Get distance between center and mouse position
-    var distance = _this.distanceFromCenter() * _this.panSpeed;
+    // Get the translation value based on mouse position from the center and speed
+    var translation = _this.distanceFromCenter() * _this.panSpeed;
 
     // If we don't know the map's current postion we get it
     if (!_this.mapPosition) {
       _this.mapPosition = _this.getMapPosition();
     }
 
-    // Get new coordinates based on the angle and the distance
-    var newX = _this.mapPosition[4] + (distance * Math.cos(angle));
-    var newY = _this.mapPosition[5] + (distance * Math.sin(angle));
+    // Get new coordinates based on the angle and the translation value
+    var newX = _this.mapPosition[4] + (translation * Math.cos(angle));
+    var newY = _this.mapPosition[5] + (translation * Math.sin(angle));
 
     // Check for left limit
     if (newX >= 0) {
