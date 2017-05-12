@@ -1,5 +1,5 @@
 <div id="map">
-  <div id="background-pattern-holder" class="fill-path">
+  <div id="background-pattern-holder">
     <?php
       echo url_get_contents(get_template_directory_uri() . '/dist/static/patterns/pattern-1.svg');
       echo url_get_contents(get_template_directory_uri() . '/dist/static/patterns/pattern-2.svg');
