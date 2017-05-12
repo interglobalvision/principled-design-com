@@ -76,7 +76,7 @@ $main-content-offset = $margin-small + $margin-mid
 
 // BACKGROUND SHAPES
 
-#background-shape-holder
+#background-pattern-holder
   position: absolute
   top: 0
   left: 0
@@ -86,58 +86,36 @@ $main-content-offset = $margin-small + $margin-mid
   justify-content: center
   align-items: center
   z-index: 0
-
-#background-shape
-  z-index: 0
-  transition: background-color $transition-duration
-  path
-    stroke-width: 0
-    fill: $color-white
-    stroke: $color-white
-    stroke-width: 0
-    stroke-miterlimit: 10
-    stroke-linejoin: round
-    transition: fill $transition-duration, stroke $transition-duration, stroke-width $transition-duration
-  &.shape-state-1
-    path
-      fill: $color-blue
-      stroke: $color-blue
-  &.shape-state-2
-    path
-      fill: $color-white
-      stroke: $color-red
-      stroke-width: $stroke-width
-  &.shape-state-3
-    path
-      fill: $color-yellow
-      stroke: $color-yellow
-  &.shape-state-4
-    path
-      fill: $color-white
-      stroke: $color-yellow
-      stroke-width: $stroke-width
-  &.shape-state-5
-    path
-      fill: $color-grey
-      stroke: $color-white
-      stroke-width: $stroke-width
-  &.shape-state-6
-    background-color: $color-blue
-    path
-      fill: $color-blue
-      stroke: $color-white
-      stroke-width: 1px
-  &.shape-state-7
-    path
-      fill: $color-red
-      stroke: $color-red
+  svg
+    position: absolute
+    z-index: 0
+    visibility: hidden
+    path, polygon
+      stroke-width: 0
+      fill: none
+      stroke: none
+      stroke-width: 0
+      stroke-miterlimit: 10
+      stroke-linejoin: round
+      transition: fill $transition-duration, stroke $transition-duration, stroke-width $transition-duration
+    &.show
+      visibility: visible
+  &.stroke-path
+    svg
+      path, polygon
+        stroke: $color-yellow
+        stroke-width: 10px
+  &.fill-path
+    svg
+      path, polygon
+        fill: $color-yellow
 
 @media screen and (orientation: landscape)
-  #background-shape
+  #background-pattern-holder svg
     width: 100%
 
 @media screen and (orientation: portrait)
-  #background-shape
+  #background-pattern-holder svg
     height: 100%
 
 // ******************************************************
