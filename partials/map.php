@@ -1,7 +1,13 @@
 <div id="map">
-  <?php
-    get_template_part('partials/background-shape');
-  ?>
+  <div id="background-pattern-holder" class="fill-path">
+    <?php
+      echo url_get_contents(get_template_directory_uri() . '/dist/static/patterns/pattern-1.svg');
+      echo url_get_contents(get_template_directory_uri() . '/dist/static/patterns/pattern-2.svg');
+      echo url_get_contents(get_template_directory_uri() . '/dist/static/patterns/pattern-3.svg');
+      echo url_get_contents(get_template_directory_uri() . '/dist/static/patterns/pattern-4.svg');
+      echo url_get_contents(get_template_directory_uri() . '/dist/static/patterns/pattern-5.svg');
+    ?>
+  </div>
   <div class="map-block">
     <div class="map-block-content">
       <p>1</p>
