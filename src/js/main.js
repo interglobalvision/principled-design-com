@@ -13,7 +13,7 @@ Site = {
     });
 
     $(document).ready(function () {
-      Site.Shapes.init();
+      //Site.Shapes.init();
       Site.Map.init();
     });
 
@@ -110,6 +110,9 @@ Site.Map = {
   center: {},
   mouse: {},
   mapPosition: false,
+  patternMin: 1,
+  patternMax: 5,
+  currentPattern: 0,
 
   init: function() {
     var _this =  this;
@@ -122,6 +125,9 @@ Site.Map = {
 
     // init pan zones
     _this.setPanZones();
+
+    // Show pattern
+    _this.showPattern();
 
     // Bind mouse position
     document.addEventListener('mousemove', _this.handleMouseMove.bind(_this));
@@ -311,6 +317,9 @@ Site.Map = {
     // Move the map
     _this.moveMap(newX,newY);
 
+    // Change pattern
+    _this.changePattern();
+
     // Animate recursevly
     window.requestAnimationFrame(_this.pan.bind(_this));
 
@@ -332,6 +341,35 @@ Site.Map = {
     // Apply new coordinates
     _this.map.style.transform = 'matrix(' + _this.mapPosition.toString() + ')';
 
+  },
+
+  showPattern: function() {
+    var _this = this;
+    var patternStyle = parseInt(Math.random() * 2);
+
+    if (patternStyle === 1) {
+      $('#background-pattern-holder').addClass('fill-path');
+    } else {
+      $('#background-pattern-holder').addClass('stroke-path');
+    }
+
+    _this.currentPattern = Math.floor(Math.random() * (_this.patternMax - _this.patternMin + 1)) + _this.patternMin;
+
+    $('svg#pattern-' + _this.currentPattern).addClass('show');
+  },
+
+  changePattern: function() {
+    var _this = this;
+
+    $('.map-pattern').removeClass('show');
+
+    if (_this.currentPattern >= _this.patternMax) {
+      _this.currentPattern = _this.patternMin;
+    } else {
+      _this.currentPattern++;
+    }
+
+    $('svg#pattern-' + _this.currentPattern).addClass('show');
   },
 
   // Return distance between center and mouse positon in pixels
