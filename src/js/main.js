@@ -110,8 +110,16 @@ Site.Map = {
   center: {},
   mouse: {},
   mapPosition: false,
-  patternMin: 1,
-  patternMax: 5,
+  $mapPattern: $('.map-pattern'),
+  $patterns: [
+    $('#pattern-1'),
+    $('#pattern-2'),
+    $('#pattern-3'),
+    $('#pattern-4'),
+    $('#pattern-5'),
+  ],
+  patternMin: 0,
+  patternMax: 4,
   currentPattern: 0,
 
   init: function() {
@@ -355,13 +363,13 @@ Site.Map = {
 
     _this.currentPattern = Math.floor(Math.random() * (_this.patternMax - _this.patternMin + 1)) + _this.patternMin;
 
-    $('svg#pattern-' + _this.currentPattern).addClass('show');
+    _this.$patterns[_this.currentPattern].addClass('show');
   },
 
   changePattern: function() {
     var _this = this;
 
-    $('.map-pattern').removeClass('show');
+    _this.$mapPattern.removeClass('show');
 
     if (_this.currentPattern >= _this.patternMax) {
       _this.currentPattern = _this.patternMin;
@@ -369,7 +377,7 @@ Site.Map = {
       _this.currentPattern++;
     }
 
-    $('svg#pattern-' + _this.currentPattern).addClass('show');
+    _this.$patterns[_this.currentPattern].addClass('show');
   },
 
   // Return distance between center and mouse positon in pixels
