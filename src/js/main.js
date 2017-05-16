@@ -13,7 +13,7 @@ Site = {
     });
 
     $(document).ready(function () {
-      //Site.Shapes.init();
+      Site.Shapes.init();
       Site.Map.init();
     });
 
@@ -64,52 +64,6 @@ Site.Menu = {
 };
 
 Site.Shapes = {
-  currentState: 0,
-  maxState: 7,
-  timer: null,
-  interval: 12000,
-  init: function() {
-    var _this = this;
-
-    _this.setState();
-    _this.startInterval();
-  },
-
-  startInterval: function() {
-    var _this = this;
-
-    _this.timer = setInterval(function() {_this.setState();}, _this.interval);
-  },
-
-  nextState: function() {
-    var _this = this;
-
-    _this.currentState++;
-
-    if (_this.currentState > _this.maxState) {
-      _this.currentState = 1;
-    }
-
-    return _this.currentState;
-  },
-
-  setState: function() {
-    var _this = this;
-
-    $('#background-shape')
-    .removeClass('shape-state-' + _this.currentState)
-    .addClass('shape-state-' + _this.nextState());
-  },
-};
-
-Site.Map = {
-  panZoneSize: 100, // in pixels
-  panSpeed: 0.04,
-  panning: false, // is it panning or not?
-  window: {},
-  center: {},
-  mouse: {},
-  mapPosition: false,
   $mapPattern: $('.map-pattern'),
   $patterns: [
     $('#pattern-1'),
@@ -121,6 +75,95 @@ Site.Map = {
   patternMin: 0,
   patternMax: 4,
   currentPattern: 0,
+  timer: null,
+  interval: 100,
+  animating: false,
+
+  init: function() {
+    var _this = this;
+
+    _this.showPattern();
+
+    document.querySelector('#map').addEventListener('startpan', function() {
+      _this.startAnimation();
+    });
+
+    document.querySelector('#map').addEventListener('stoppan', function() {
+      _this.stopAnimation();
+    });
+  },
+
+  showPattern: function() {
+    var _this = this;
+
+    // Choose 1 or 0
+    var patternStyle = parseInt(Math.random() * 2);
+
+    if (patternStyle === 1) {
+      // If 1, fill paths
+      $('#background-pattern-holder').addClass('fill-path');
+    } else {
+      // If 0, stroke paths
+      $('#background-pattern-holder').addClass('stroke-path');
+    }
+
+    // Assign random current pattern array index
+    _this.currentPattern = Math.floor(Math.random() * (_this.patternMax - _this.patternMin + 1)) + _this.patternMin;
+
+    // Show current pattern
+    _this.$patterns[_this.currentPattern].addClass('show');
+  },
+
+  changePattern: function() {
+    var _this = this;
+
+    // Check is animating has been stopped; we do this here to fail faster
+    if (!_this.animating) {
+      return false;
+    }
+
+    // Hide current pattern
+    _this.$mapPattern.removeClass('show');
+
+    // Assign next current pattern
+    if (_this.currentPattern >= _this.patternMax) {
+      // If last pattern, start from min index
+      _this.currentPattern = _this.patternMin;
+    } else {
+      // Else, assign next index
+      _this.currentPattern++;
+    }
+
+    // Show new current pattern
+    _this.$patterns[_this.currentPattern].addClass('show');
+
+    // Animate recursively
+    window.requestAnimationFrame(_this.changePattern.bind(_this));
+  },
+
+  startAnimation: function() {
+    var _this = this;
+
+    _this.animating = true;
+
+    window.requestAnimationFrame(_this.changePattern.bind(_this));
+  },
+
+  stopAnimation: function() {
+    var _this = this;
+
+    _this.animating = false;
+  },
+};
+
+Site.Map = {
+  panZoneSize: 100, // in pixels
+  panSpeed: 0.04,
+  panning: false, // is it panning or not?
+  window: {},
+  center: {},
+  mouse: {},
+  mapPosition: false,
 
   init: function() {
     var _this =  this;
@@ -133,9 +176,6 @@ Site.Map = {
 
     // init pan zones
     _this.setPanZones();
-
-    // Show pattern
-    _this.showPattern();
 
     // Bind mouse position
     document.addEventListener('mousemove', _this.handleMouseMove.bind(_this));
@@ -325,9 +365,6 @@ Site.Map = {
     // Move the map
     _this.moveMap(newX,newY);
 
-    // Change pattern
-    _this.changePattern();
-
     // Animate recursevly
     window.requestAnimationFrame(_this.pan.bind(_this));
 
@@ -349,35 +386,6 @@ Site.Map = {
     // Apply new coordinates
     _this.map.style.transform = 'matrix(' + _this.mapPosition.toString() + ')';
 
-  },
-
-  showPattern: function() {
-    var _this = this;
-    var patternStyle = parseInt(Math.random() * 2);
-
-    if (patternStyle === 1) {
-      $('#background-pattern-holder').addClass('fill-path');
-    } else {
-      $('#background-pattern-holder').addClass('stroke-path');
-    }
-
-    _this.currentPattern = Math.floor(Math.random() * (_this.patternMax - _this.patternMin + 1)) + _this.patternMin;
-
-    _this.$patterns[_this.currentPattern].addClass('show');
-  },
-
-  changePattern: function() {
-    var _this = this;
-
-    _this.$mapPattern.removeClass('show');
-
-    if (_this.currentPattern >= _this.patternMax) {
-      _this.currentPattern = _this.patternMin;
-    } else {
-      _this.currentPattern++;
-    }
-
-    _this.$patterns[_this.currentPattern].addClass('show');
   },
 
   // Return distance between center and mouse positon in pixels
