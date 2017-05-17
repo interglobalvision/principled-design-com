@@ -7,6 +7,7 @@ Site = {
     var _this = this;
 
     Site.Menu.init();
+    Site.Router.init();
 
     $(window).resize(function(){
       _this.onResize();
@@ -53,13 +54,44 @@ Site.Menu = {
   onItemClick: function(item, event) {
     var _this = this;
     var href = $(item).children('a').attr('href');
-    var hash = href.substr(1);
+    var hash = href.substr(3);
 
     $('.header-menu-active').removeClass('header-menu-active');
     $(item).addClass('header-menu-active');
+  },
+};
 
-    $('.page-content').removeClass('page-content-active');
-    $('.page-content[data-slug="' + hash + '"]').addClass('page-content-active');
+Site.Router = {
+  init: function() {
+    var _this = this;
+
+    _this.bind();
+
+    if (location.hash) {
+      _this.loadRoute(_this.parseHash(location.hash));
+    }
+  },
+
+  bind: function() {
+    var _this = this;
+
+    $(window).on('hashchange', function() {
+      _this.loadRoute(_this.parseHash(location.hash));
+    });
+
+  },
+
+  loadRoute: function(hash) {
+    var _this = this;
+
+    if (hash) {
+      $('.page-content').removeClass('page-content-active');
+      $('.page-content[data-slug="' + hash + '"]').addClass('page-content-active');
+    }
+  },
+
+  parseHash: function(rawHash) {
+    return rawHash.substr(3);
   },
 };
 

@@ -45,7 +45,7 @@ if ( $query->have_posts() ) {
     $query->the_post();
 ?>
 
-      <li class="header-menu-item"><a href="#<?php echo $post->post_name; ?>"><?php the_title(); ?></a></li>
+      <li class="header-menu-item"><a href="#!/<?php echo $post->post_name; ?>"><?php the_title(); ?></a></li>
 
 <?php
   }
