@@ -6,7 +6,6 @@ Site = {
   init: function() {
     var _this = this;
 
-    Site.Menu.init();
     Site.Router.init();
 
     $(window).resize(function(){
@@ -32,32 +31,6 @@ Site = {
       string = string.replace(/ ([^ ]*)$/,'&nbsp;$1');
       $(this).html(string);
     });
-  },
-};
-
-Site.Menu = {
-  $headerItems: $('.header-menu-item'),
-  init: function() {
-    var _this = this;
-
-    _this.bind();
-  },
-
-  bind: function() {
-    var _this = this;
-
-    _this.$headerItems.on('click', function(e) {
-      _this.onItemClick(this, e);
-    });
-  },
-
-  onItemClick: function(item, event) {
-    var _this = this;
-    var href = $(item).children('a').attr('href');
-    var hash = href.substr(3);
-
-    $('.header-menu-active').removeClass('header-menu-active');
-    $(item).addClass('header-menu-active');
   },
 };
 
@@ -87,8 +60,18 @@ Site.Router = {
     if (hash) {
       $('.page-content').removeClass('page-content-active');
       $('.page-content[data-slug="' + hash + '"]').addClass('page-content-active');
+
+      _this.setMenuActive(hash);
     }
   },
+
+  setMenuActive: function(hash) {
+    var _this = this;
+    var $item = $('.header-menu-item[data-slug="' + hash + '"]')
+
+    $('.header-menu-active').removeClass('header-menu-active');
+    $item.addClass('header-menu-active');
+  }
 
   parseHash: function(rawHash) {
     return rawHash.substr(3);
