@@ -79,41 +79,98 @@ Site.Router = {
 };
 
 Site.Shapes = {
-  currentState: 0,
-  maxState: 7,
+  $mapPattern: $('.map-pattern'),
+  $patterns: [
+    $('#pattern-1'),
+    $('#pattern-2'),
+    $('#pattern-3'),
+    $('#pattern-4'),
+    $('#pattern-5'),
+  ],
+  patternMin: 0,
+  patternMax: 4,
+  currentPattern: 0,
   timer: null,
-  interval: 12000,
+  interval: 100,
+  animating: false,
+
   init: function() {
     var _this = this;
 
-    _this.setState();
-    _this.startInterval();
+    _this.showPattern();
+
+    var map = document.getElementById('map');
+
+    map.addEventListener('startpan', function() {
+      _this.startAnimation();
+    });
+
+    map.addEventListener('stoppan', function() {
+      _this.stopAnimation();
+    });
+
   },
 
-  startInterval: function() {
+  showPattern: function() {
     var _this = this;
 
-    _this.timer = setInterval(function() {_this.setState();}, _this.interval);
-  },
+    // Choose 1 or 0
+    var patternStyle = parseInt(Math.random() * 2);
 
-  nextState: function() {
-    var _this = this;
-
-    _this.currentState++;
-
-    if (_this.currentState > _this.maxState) {
-      _this.currentState = 1;
+    if (patternStyle === 1) {
+      // If 1, fill paths
+      $('#background-pattern-holder').addClass('fill-path');
+    } else {
+      // If 0, stroke paths
+      $('#background-pattern-holder').addClass('stroke-path');
     }
 
-    return _this.currentState;
+    // Assign random current pattern array index
+    _this.currentPattern = Math.floor(Math.random() * (_this.patternMax - _this.patternMin + 1)) + _this.patternMin;
+
+    // Show current pattern
+    _this.$patterns[_this.currentPattern].addClass('show');
   },
 
-  setState: function() {
+  changePattern: function() {
     var _this = this;
 
-    $('#background-shape')
-    .removeClass('shape-state-' + _this.currentState)
-    .addClass('shape-state-' + _this.nextState());
+    // Check is animating has been stopped; we do this here to fail faster
+    if (!_this.animating) {
+      return false;
+    }
+
+    // Hide current pattern
+    _this.$mapPattern.removeClass('show');
+
+    // Assign next current pattern
+    if (_this.currentPattern >= _this.patternMax) {
+      // If last pattern, start from min index
+      _this.currentPattern = _this.patternMin;
+    } else {
+      // Else, assign next index
+      _this.currentPattern++;
+    }
+
+    // Show new current pattern
+    _this.$patterns[_this.currentPattern].addClass('show');
+
+    // Animate recursively
+    window.requestAnimationFrame(_this.changePattern.bind(_this));
+  },
+
+  startAnimation: function() {
+    var _this = this;
+
+    _this.animating = true;
+
+    window.requestAnimationFrame(_this.changePattern.bind(_this));
+  },
+
+  stopAnimation: function() {
+    var _this = this;
+
+    _this.animating = false;
   },
 };
 
