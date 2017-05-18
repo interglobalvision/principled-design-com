@@ -67,7 +67,8 @@ Site.Router = {
 
   setMenuActive: function(hash) {
     var _this = this;
-    var $item = $('.header-menu-item[data-slug="' + hash + '"]')
+
+    var $item = $('.header-menu-item[data-slug="' + hash + '"]');
 
     $('.header-menu-active').removeClass('header-menu-active');
     $item.addClass('header-menu-active');
@@ -175,14 +176,14 @@ Site.Shapes = {
 };
 
 Site.Map = {
-  panZoneSize: 100, // in pixels
+  panZoneSize: 150, // in pixels
   panSpeed: 0.04,
   panning: false, // is it panning or not?
   window: {},
   center: {},
   mouse: {},
   mapPosition: false,
-
+  pointerInHeader: false,
   init: function() {
     var _this =  this;
 
@@ -200,6 +201,8 @@ Site.Map = {
 
     // Detect mouse outside window
     document.body.addEventListener('mouseleave', _this.stopPanning.bind(_this));
+
+    _this.bindHeaderMouseOver();
   },
 
   getWindowSize: function() {
@@ -252,7 +255,7 @@ Site.Map = {
     _this.mouse.y = event.clientY;
 
 
-    if(_this.isInsidePanZone() && !_this.panning) {
+    if (_this.isInsidePanZone() && !_this.panning) {
       _this.triggerPanning(); // Trigger animation
     } else if(_this.panning && !_this.isInsidePanZone()) {
       _this.stopPanning(); // Stop animation
@@ -273,16 +276,23 @@ Site.Map = {
   isInsidePanZone: function() {
     var _this =  this;
 
+    // Check if mouse is over header or it's childs
+    if(_this.mouseOnHeader) {
+      return false;
+    }
+
+    // Get mouse position
     var posX = _this.mouse.x;
     var posY = _this.mouse.y;
 
+    // Check if mouse is inside panZones
     if ( (posX >= _this.panZones.left.min && posX <= _this.panZones.left.max) || // Left
       (posX >= _this.panZones.right.min && posX <= _this.panZones.right.max) || // Right
       (posY >= _this.panZones.up.min && posY <= _this.panZones.up.max) || // Up
-      (posY >= _this.panZones.down.min && posY <= _this.panZones.down.max) ) { //  Down
-
-        return true;
-      }
+      (posY >= _this.panZones.down.min && posY <= _this.panZones.down.max) ) //  Down
+    {
+      return true;
+    }
 
     return false;
 
@@ -434,16 +444,46 @@ Site.Map = {
     var _this =  this;
 
     // Get current element position (transform values)
-    var transformMatrix = getComputedStyle(this.map)['transform']; // Returns a string like "matrix(0,0,0,0,0,0)"
+    var transformMatrix = getComputedStyle(this.map).transform; // Returns a string like "matrix(0,0,0,0,0,0)"
 
     // Get only the values
     transformMatrix = transformMatrix.replace('matrix(','').replace(')', ''); // Returns a string like "0,0,0,0,0,0"
 
     // Make it into an array
-    return transformMatrix = transformMatrix.split(', ').map( function(item) {
+    transformMatrix = transformMatrix.split(', ').map( function(item) {
       return parseInt(item, 10);
     }); // Returns an array like [0,0,0,0,0,0]
-  }
+
+    return transformMatrix;
+  },
+
+  bindHeaderMouseOver: function() {
+    var _this =  this;
+
+    // Detect mouse inside #header
+    var headerChilds = document.querySelectorAll('#header > *');
+
+    for (var i = 0; i < headerChilds.length; i++) {
+      var child = headerChilds[i];
+
+      child.addEventListener('mouseenter', _this.mouseEntersHeader.bind(_this));
+      child.addEventListener('mouseleave', _this.mouseLeavesHeader.bind(_this));
+    }
+
+  },
+
+  mouseEntersHeader: function() {
+    var _this = this;
+
+    _this.mouseOnHeader = true;
+  },
+
+  mouseLeavesHeader: function() {
+    var _this = this;
+
+    _this.mouseOnHeader = false;
+  },
+
 };
 
 Site.init();

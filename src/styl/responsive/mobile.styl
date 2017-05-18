@@ -7,7 +7,7 @@ $menu-width = 250px
   width: $menu-width
   padding: $margin-small
   z-index: 200
-  font-family: 'Calibre-Bold', font-stack('Helvetica');
+  font-family: 'Calibre-Bold', font-stack('Helvetica')
   font-weight: 700
 
 #header-name
@@ -59,7 +59,7 @@ $main-content-offset = $margin-small + $margin-mid
   display: flex
   flex-wrap: wrap
   transform: translate(-33.3333333%, -33.333333%)
-  transition: transform 100ms
+  transition: transform 50ms linear
   z-index: 100
 
 .map-block
@@ -86,28 +86,34 @@ $main-content-offset = $margin-small + $margin-mid
   justify-content: center
   align-items: center
   z-index: 0
+
   svg
     position: absolute
     z-index: 0
     visibility: hidden
-    path, polygon
+
+    path,
+    polygon
       stroke-width: 0
       fill: $color-white
       stroke: $color-white
       stroke-width: 0
       stroke-miterlimit: 10
       stroke-linejoin: round
-      //transition: fill $transition-duration, stroke $transition-duration, stroke-width $transition-duration
+      // transition: fill $transition-duration, stroke $transition-duration, stroke-width $transition-duration
+
     &.show
       visibility: visible
   &.stroke-path
     svg
-      path, polygon
+      path,
+      polygon
         stroke: $color-yellow
         stroke-width: 10px
   &.fill-path
     svg
-      path, polygon
+      path,
+      polygon
         fill: $color-yellow
 
 @media screen and (orientation: landscape)
