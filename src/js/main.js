@@ -176,7 +176,7 @@ Site.Shapes = {
 };
 
 Site.Map = {
-  panZoneSize: 100, // in pixels
+  panZoneSize: 150, // in pixels
   panSpeed: 0.04,
   panning: false, // is it panning or not?
   window: {},
