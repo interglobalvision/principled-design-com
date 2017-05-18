@@ -6,7 +6,7 @@ $menu-width = 250px
   position: fixed
   width: $menu-width
   padding: $margin-small
-  z-index: 200
+  z-index: 300
   font-family: 'Calibre-Bold', font-stack('Helvetica')
   font-weight: 700
 
@@ -31,7 +31,7 @@ $main-content-offset = $margin-small + $margin-mid
   width: 'calc(100vw - %s)' % ($menu-width + $margin-small)
   left: $menu-width + $margin-small
   height: 100vh
-  z-index: 200
+  z-index: 300
   padding-top: $main-content-offset
   overflow-y: scroll
 
@@ -71,6 +71,38 @@ $main-content-offset = $margin-small + $margin-mid
   justify-content: center
   font-size: 10em
   z-index: 100
+
+// ******************************************************
+
+// MINIMAP
+
+#minimap
+  position: fixed
+  bottom: $margin-small
+  left: $margin-small
+  z-index: 200
+  border: 2px solid $color-black
+
+.minimap-row
+  display: flex
+  flex-direction: row
+
+.minimap-button
+  width: 3vw
+  height: 3vh
+  display: flex
+  flex-direction: row
+  justify-content: center
+  align-items: center
+  font-size: 10px
+
+#minimap-location
+  width: 3vw
+  height: 3vh
+  position: absolute
+  top: 3vh
+  left: 3vw
+  border: 2px solid $color-black
 
 // ******************************************************
 
