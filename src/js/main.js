@@ -15,6 +15,7 @@ Site = {
     $(document).ready(function () {
       Site.Shapes.init();
       Site.Map.init();
+      Site.Minimap.init();
     });
 
   },
@@ -414,6 +415,8 @@ Site.Map = {
     // Apply new coordinates
     _this.map.style.transform = 'matrix(' + _this.mapPosition.toString() + ')';
 
+    // Move minimap location
+    Site.Minimap.moveLocation(x,y);
   },
 
   // Return distance between center and mouse positon in pixels
@@ -441,10 +444,10 @@ Site.Map = {
 
   // Return current map postion
   getMapPosition: function() {
-    var _this =  this;
+    var _this = this;
 
     // Get current element position (transform values)
-    var transformMatrix = getComputedStyle(this.map).transform; // Returns a string like "matrix(0,0,0,0,0,0)"
+    var transformMatrix = getComputedStyle(_this.map).transform; // Returns a string like "matrix(0,0,0,0,0,0)"
 
     // Get only the values
     transformMatrix = transformMatrix.replace('matrix(','').replace(')', ''); // Returns a string like "0,0,0,0,0,0"
@@ -482,6 +485,81 @@ Site.Map = {
     var _this = this;
 
     _this.mouseOnHeader = false;
+  },
+
+};
+
+
+Site.Minimap = {
+  locationPosition: false,
+  init: function() {
+    var _this = this;
+
+    // Set map element
+    _this.minimapLocation = document.getElementById('minimap-location');
+
+    _this.bindClick();
+  },
+
+  bindClick: function() {
+    var _this = this;
+
+    $('.minimap-button').on('click', function() {
+      _this.handleClick(this);
+    });
+  },
+
+  handleClick: function(el) {
+    var _this = this;
+
+    // Parse targets position JSON from data attr
+    var pos = JSON.parse($(el).attr('data-pos'));
+    var col = pos.col;
+    var row = pos.row;
+
+    var x = -(col) * Site.Map.window.width;
+    var y = -(row) * Site.Map.window.height;
+
+    Site.Map.moveMap(x,y);
+  },
+
+  moveLocation: function(x,y) {
+    var _this = this;
+
+    var minimapX = x * -.03;
+    var minimapY = y * -.03;
+
+    // If we don't know the map's current postion we get it
+    if (!_this.locationPosition) {
+      _this.locationPosition = _this.getLocationPosition();
+      console.log(  _this.locationPosition );
+    }
+
+    // Set new coordinates
+    _this.locationPosition[4] = minimapX;
+    _this.locationPosition[5] = minimapY;
+
+    // Apply new coordinates
+    _this.minimapLocation.style.transform = 'matrix(' + _this.locationPosition.toString() + ')';
+  },
+
+  // Return current minimap location position
+  getLocationPosition: function() {
+    var _this =  this;
+
+    // Get current element position (transform values)
+    var transformMatrix = getComputedStyle(this.minimapLocation).transform; // Returns a string like "matrix(0,0,0,0,0,0)"
+
+    // Get only the values
+    transformMatrix = transformMatrix.replace('matrix(','').replace(')', ''); // Returns a string like "0,0,0,0,0,0"
+
+    // Make it into an array
+    transformMatrix = transformMatrix.split(', ').map( function(item) {
+      return parseInt(item, 10);
+    }); // Returns an array like [0,0,0,0,0,0]
+
+
+    return transformMatrix;
   },
 
 };
