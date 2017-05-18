@@ -183,7 +183,7 @@ Site.Map = {
   center: {},
   mouse: {},
   mapPosition: false,
-
+  pointerInHeader: false,
   init: function() {
     var _this =  this;
 
@@ -201,6 +201,8 @@ Site.Map = {
 
     // Detect mouse outside window
     document.body.addEventListener('mouseleave', _this.stopPanning.bind(_this));
+
+    _this.bindHeaderMouseOver();
   },
 
   getWindowSize: function() {
@@ -274,16 +276,23 @@ Site.Map = {
   isInsidePanZone: function() {
     var _this =  this;
 
+    // Check if mouse is over header or it's childs
+    if(_this.mouseOnHeader) {
+      return false;
+    }
+
+    // Get mouse position
     var posX = _this.mouse.x;
     var posY = _this.mouse.y;
 
+    // Check if mouse is inside panZones
     if ( (posX >= _this.panZones.left.min && posX <= _this.panZones.left.max) || // Left
       (posX >= _this.panZones.right.min && posX <= _this.panZones.right.max) || // Right
       (posY >= _this.panZones.up.min && posY <= _this.panZones.up.max) || // Up
-      (posY >= _this.panZones.down.min && posY <= _this.panZones.down.max) ) { //  Down
-
-        return true;
-      }
+      (posY >= _this.panZones.down.min && posY <= _this.panZones.down.max) ) //  Down
+    {
+      return true;
+    }
 
     return false;
 
@@ -446,7 +455,28 @@ Site.Map = {
     }); // Returns an array like [0,0,0,0,0,0]
 
     return transformMatrix;
-  }
+  },
+
+  bindHeaderMouseOver: function() {
+    var _this =  this;
+
+    // Detect mouse inside #header
+    var headerChilds = document.querySelectorAll('#header > *');
+
+    for (var i = 0; i < headerChilds.length; i++) {
+      var child = headerChilds[i];
+
+      child.addEventListener('mouseenter', function() {
+        _this.mouseOnHeader = true;
+      });
+
+      child.addEventListener('mouseleave', function() {
+        _this.mouseOnHeader = false;
+      });
+    }
+
+  },
+
 };
 
 Site.init();
