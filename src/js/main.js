@@ -67,7 +67,8 @@ Site.Router = {
 
   setMenuActive: function(hash) {
     var _this = this;
-    var $item = $('.header-menu-item[data-slug="' + hash + '"]')
+
+    var $item = $('.header-menu-item[data-slug="' + hash + '"]');
 
     $('.header-menu-active').removeClass('header-menu-active');
     $item.addClass('header-menu-active');
@@ -252,7 +253,7 @@ Site.Map = {
     _this.mouse.y = event.clientY;
 
 
-    if(_this.isInsidePanZone() && !_this.panning) {
+    if (_this.isInsidePanZone() && !_this.panning) {
       _this.triggerPanning(); // Trigger animation
     } else if(_this.panning && !_this.isInsidePanZone()) {
       _this.stopPanning(); // Stop animation
@@ -434,15 +435,17 @@ Site.Map = {
     var _this =  this;
 
     // Get current element position (transform values)
-    var transformMatrix = getComputedStyle(this.map)['transform']; // Returns a string like "matrix(0,0,0,0,0,0)"
+    var transformMatrix = getComputedStyle(this.map).transform; // Returns a string like "matrix(0,0,0,0,0,0)"
 
     // Get only the values
     transformMatrix = transformMatrix.replace('matrix(','').replace(')', ''); // Returns a string like "0,0,0,0,0,0"
 
     // Make it into an array
-    return transformMatrix = transformMatrix.split(', ').map( function(item) {
+    transformMatrix = transformMatrix.split(', ').map( function(item) {
       return parseInt(item, 10);
     }); // Returns an array like [0,0,0,0,0,0]
+
+    return transformMatrix;
   }
 };
 
