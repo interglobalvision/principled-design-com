@@ -163,21 +163,29 @@ Site.Shapes = {
     var currentTime = new Date().getTime();
 		var delta = currentTime - _this.startTime;
 
+    // If interval has passed since start time
     if(delta >= _this.interval) {
+
+      // Change the background pattern
       _this.changePattern();
+
+      // Reset start time
       _this.startTime = new Date().getTime();
     }
 
+    // Play loop recursively
     _this.timer = window.requestAnimationFrame(_this.playAnimation.bind(_this));
   },
 
   startAnimation: function() {
     var _this = this;
 
+    // Set initial start time
     _this.startTime = new Date().getTime() - _this.interval;
 
     _this.animating = true;
 
+    // Initialize animation loop
     _this.playAnimation();
   },
 
@@ -186,6 +194,7 @@ Site.Shapes = {
 
     _this.animating = false;
 
+    // Clear animation request
     window.cancelAnimationFrame(_this.timer);
   },
 };
