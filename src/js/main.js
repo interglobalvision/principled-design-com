@@ -466,15 +466,22 @@ Site.Map = {
     for (var i = 0; i < headerChilds.length; i++) {
       var child = headerChilds[i];
 
-      child.addEventListener('mouseenter', function() {
-        _this.mouseOnHeader = true;
-      });
-
-      child.addEventListener('mouseleave', function() {
-        _this.mouseOnHeader = false;
-      });
+      child.addEventListener('mouseenter', _this.mouseEntersHeader.bind(_this));
+      child.addEventListener('mouseleave', _this.mouseLeavesHeader.bind(_this));
     }
 
+  },
+
+  mouseEntersHeader: function() {
+    var _this = this;
+
+    _this.mouseOnHeader = true;
+  },
+
+  mouseLeavesHeader: function() {
+    var _this = this;
+
+    _this.mouseOnHeader = false;
   },
 
 };
