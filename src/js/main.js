@@ -71,7 +71,7 @@ Site.Router = {
 
     $('.header-menu-active').removeClass('header-menu-active');
     $item.addClass('header-menu-active');
-  }
+  },
 
   parseHash: function(rawHash) {
     return rawHash.substr(3);
