@@ -84,13 +84,16 @@ Site.Shapes = {
 
     _this.showPattern();
 
-    document.querySelector('#map').addEventListener('startpan', function() {
+    var map = document.getElementById('map');
+
+    map.addEventListener('startpan', function() {
       _this.startAnimation();
     });
 
-    document.querySelector('#map').addEventListener('stoppan', function() {
+    map.addEventListener('stoppan', function() {
       _this.stopAnimation();
     });
+
   },
 
   showPattern: function() {
