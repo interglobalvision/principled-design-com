@@ -93,7 +93,7 @@ Site.Shapes = {
   patternMax: 4,
   currentPattern: 0,
   timer: null,
-  interval: 100,
+  interval: 500,
   animating: false,
 
   init: function() {
@@ -137,11 +137,6 @@ Site.Shapes = {
   changePattern: function() {
     var _this = this;
 
-    // Check is animating has been stopped; we do this here to fail faster
-    if (!_this.animating) {
-      return false;
-    }
-
     // Hide current pattern
     _this.$mapPattern.removeClass('show');
 
@@ -156,23 +151,52 @@ Site.Shapes = {
 
     // Show new current pattern
     _this.$patterns[_this.currentPattern].addClass('show');
+  },
 
-    // Animate recursively
-    window.requestAnimationFrame(_this.changePattern.bind(_this));
+  playAnimation: function() {
+    var _this = this;
+
+    // Check is animating has been stopped; we do this here to fail faster
+    if (!_this.animating) {
+      return false;
+    }
+
+    var currentTime = new Date().getTime();
+    var delta = currentTime - _this.startTime;
+
+    // If interval has passed since start time
+    if (delta >= _this.interval) {
+
+      // Change the background pattern
+      _this.changePattern();
+
+      // Reset start time
+      _this.startTime = new Date().getTime();
+    }
+
+    // Play loop recursively
+    _this.timer = window.requestAnimationFrame(_this.playAnimation.bind(_this));
   },
 
   startAnimation: function() {
     var _this = this;
 
+    // Set initial start time
+    _this.startTime = new Date().getTime() - _this.interval;
+
     _this.animating = true;
 
-    window.requestAnimationFrame(_this.changePattern.bind(_this));
+    // Initialize animation loop
+    _this.playAnimation();
   },
 
   stopAnimation: function() {
     var _this = this;
 
     _this.animating = false;
+
+    // Clear animation request
+    window.cancelAnimationFrame(_this.timer);
   },
 };
 

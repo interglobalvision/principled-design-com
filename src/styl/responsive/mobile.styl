@@ -126,7 +126,8 @@ $main-content-offset = $margin-small + $margin-mid
   svg
     position: absolute
     z-index: 0
-    visibility: hidden
+    opacity: 0
+    transition: opacity 1s
 
     path,
     polygon
@@ -139,7 +140,7 @@ $main-content-offset = $margin-small + $margin-mid
       // transition: fill $transition-duration, stroke $transition-duration, stroke-width $transition-duration
 
     &.show
-      visibility: visible
+      opacity: 1
   &.stroke-path
     svg
       path,
