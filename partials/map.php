@@ -11,10 +11,12 @@
 
   <div class="map-block">
     <div class="map-block-content">
+      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-3.jpg'; ?>">
     </div>
   </div>
   <div class="map-block">
     <div class="map-block-content">
+      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-4.jpg'; ?>">
     </div>
   </div>
   <div class="map-block">
@@ -29,18 +31,22 @@
   </div>
   <div class="map-block">
     <div class="map-block-content">
+      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-4.jpg'; ?>">
     </div>
   </div>
   <div class="map-block">
     <div class="map-block-content">
+      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-3.jpg'; ?>">
     </div>
   </div>
   <div class="map-block">
     <div class="map-block-content">
+      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-1.jpg'; ?>">
     </div>
   </div>
   <div class="map-block">
     <div class="map-block-content">
+      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-2.jpg'; ?>">
     </div>
   </div>
   <div class="map-block">
