@@ -388,7 +388,7 @@ Site.Map = {
 
     // If we don't know the map's current postion we get it
     if (!_this.mapPosition) {
-      _this.mapPosition = _this.getMapPosition(_this.map);
+      _this.mapPosition = _this.getElemPosition(_this.map);
     }
 
     // Get new coordinates based on the angle and the translation value
@@ -429,7 +429,7 @@ Site.Map = {
 
     // If we don't know the map's current postion we get it
     if (!_this.mapPosition) {
-      _this.mapPosition = _this.getMapPosition(_this.map);
+      _this.mapPosition = _this.getElemPosition(_this.map);
     }
 
     // Set new coordinates
@@ -467,7 +467,7 @@ Site.Map = {
   },
 
   // Return current map postion
-  getMapPosition: function(elem) {
+  getElemPosition: function(elem) {
     var _this = this;
 
     // Get current element position (transform values)
@@ -564,7 +564,7 @@ Site.Minimap = {
 
     // If we don't know the indicator's current postion we get it
     if (!_this.indicatorPosition) {
-      _this.indicatorPosition = Site.Map.getMapPosition(_this.minimapIndicator);
+      _this.indicatorPosition = Site.Map.getElemPosition(_this.minimapIndicator);
     }
 
     // Set new coordinates

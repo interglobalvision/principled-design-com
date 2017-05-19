@@ -57,4 +57,6 @@ if ( $query->have_posts() ) {
 wp_reset_postdata();
 ?>
 
+    <?php get_template_part('partials/minimap'); ?>
+
   </nav>
