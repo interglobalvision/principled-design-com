@@ -2,6 +2,11 @@
 
 $menu-width = 250px
 
+$fade-duration = .3s
+
+.fade-element
+  opacity: .3
+
 #header
   position: fixed
   width: $menu-width
@@ -9,6 +14,7 @@ $menu-width = 250px
   z-index: 200
   font-family: 'Calibre-Bold', font-stack('Helvetica')
   font-weight: 700
+  transition: opacity $fade-duration
 
 #header-name
   height: $margin-mid
@@ -34,6 +40,7 @@ $main-content-offset = $margin-small + $margin-mid
   z-index: 200
   padding-top: $main-content-offset
   overflow-y: scroll
+  transition: opacity $fade-duration
 
 #main-content
   width: 360px
@@ -76,6 +83,7 @@ $main-content-offset = $margin-small + $margin-mid
   display: flex
   justify-content: center
   align-items: center
+  transition: opacity $fade-duration
   img
     max-width: 50vw
 
