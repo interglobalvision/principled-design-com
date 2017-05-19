@@ -161,10 +161,10 @@ Site.Shapes = {
     }
 
     var currentTime = new Date().getTime();
-		var delta = currentTime - _this.startTime;
+    var delta = currentTime - _this.startTime;
 
     // If interval has passed since start time
-    if(delta >= _this.interval) {
+    if (delta >= _this.interval) {
 
       // Change the background pattern
       _this.changePattern();
