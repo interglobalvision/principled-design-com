@@ -90,5 +90,5 @@
       <span>&bull;</span>
     </div>
   </div>
-  <div id="minimap-location"></div>
+  <div id="minimap-indicator"></div>
 </div>
