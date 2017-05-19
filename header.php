@@ -33,6 +33,8 @@
 $args = array(
   'post_type'      => array( 'page' ),
   'posts_per_page' => '-1',
+  'orderby'        => 'menu_order',
+  'order'          => 'ASC',
 );
 
 $query = new WP_Query( $args );
