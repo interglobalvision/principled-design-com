@@ -11,47 +11,41 @@
 
   <div class="map-block">
     <div class="map-block-content">
-      <p>1</p>
     </div>
   </div>
   <div class="map-block">
     <div class="map-block-content">
-      <p>2</p>
     </div>
   </div>
   <div class="map-block">
     <div class="map-block-content">
-      <img src="http://lorempixel.com/output/technics-q-c-640-480-4.jpg">
+      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-1.jpg'; ?>">
     </div>
   </div>
   <div class="map-block">
     <div class="map-block-content">
-      <img src="http://lorempixel.com/output/technics-q-c-640-480-7.jpg">
+      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-2.jpg'; ?>">
     </div>
   </div>
   <div class="map-block">
     <div class="map-block-content">
-      <p>5</p>
     </div>
   </div>
   <div class="map-block">
     <div class="map-block-content">
-      <p>6</p>
     </div>
   </div>
   <div class="map-block">
     <div class="map-block-content">
-      <p>7</p>
     </div>
   </div>
   <div class="map-block">
     <div class="map-block-content">
-      <p>8</p>
     </div>
   </div>
   <div class="map-block">
     <div class="map-block-content">
-      <img src="http://lorempixel.com/output/technics-q-c-640-480-10.jpg">
+      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-3.jpg'; ?>">
     </div>
   </div>
 </div>
