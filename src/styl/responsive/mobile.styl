@@ -74,6 +74,42 @@ $main-content-offset = $margin-small + $margin-mid
 
 // ******************************************************
 
+// MINIMAP
+
+#minimap
+  position: fixed
+  bottom: $margin-small
+  left: $margin-small
+  z-index: 300
+  border: 2px solid $color-black
+
+.minimap-row
+  display: flex
+  flex-direction: row
+
+.minimap-button
+  width: 3vw
+  height: 3vh
+  display: flex
+  flex-direction: row
+  justify-content: center
+  align-items: center
+  font-size: 10px
+  cursor: pointer
+
+#minimap-indicator
+  width: 3vw
+  height: 3vh
+  position: absolute
+  top: 0
+  left: 0
+  border: 2px solid $color-black
+  pointer-events: none
+  transform: translate(3vw, 3vh)
+  transition: transform 50ms linear
+
+// ******************************************************
+
 // BACKGROUND SHAPES
 
 #background-pattern-holder

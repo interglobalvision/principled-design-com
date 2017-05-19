@@ -15,6 +15,7 @@ Site = {
     $(document).ready(function () {
       Site.Shapes.init();
       Site.Map.init();
+      Site.Minimap.init();
     });
 
   },
@@ -387,7 +388,7 @@ Site.Map = {
 
     // If we don't know the map's current postion we get it
     if (!_this.mapPosition) {
-      _this.mapPosition = _this.getMapPosition();
+      _this.mapPosition = _this.getMapPosition(_this.map);
     }
 
     // Get new coordinates based on the angle and the translation value
@@ -428,7 +429,7 @@ Site.Map = {
 
     // If we don't know the map's current postion we get it
     if (!_this.mapPosition) {
-      _this.mapPosition = _this.getMapPosition();
+      _this.mapPosition = _this.getMapPosition(_this.map);
     }
 
     // Set new coordinates
@@ -438,6 +439,8 @@ Site.Map = {
     // Apply new coordinates
     _this.map.style.transform = 'matrix(' + _this.mapPosition.toString() + ')';
 
+    // Move minimap position indicator
+    Site.Minimap.moveIndicator(x,y);
   },
 
   // Return distance between center and mouse positon in pixels
@@ -464,11 +467,11 @@ Site.Map = {
   },
 
   // Return current map postion
-  getMapPosition: function() {
-    var _this =  this;
+  getMapPosition: function(elem) {
+    var _this = this;
 
     // Get current element position (transform values)
-    var transformMatrix = getComputedStyle(this.map).transform; // Returns a string like "matrix(0,0,0,0,0,0)"
+    var transformMatrix = getComputedStyle(elem).transform; // Returns a string like "matrix(0,0,0,0,0,0)"
 
     // Get only the values
     transformMatrix = transformMatrix.replace('matrix(','').replace(')', ''); // Returns a string like "0,0,0,0,0,0"
@@ -506,6 +509,70 @@ Site.Map = {
     var _this = this;
 
     _this.mouseOnHeader = false;
+  },
+
+};
+
+
+Site.Minimap = {
+  minimapScale: .03,
+  indicatorPosition: false,
+  init: function() {
+    var _this = this;
+
+    // Set indicator element
+    _this.minimapIndicator = document.getElementById('minimap-indicator');
+
+    _this.bindClick();
+  },
+
+  bindClick: function() {
+    var _this = this;
+
+    // Bind click on minimap buttons
+    $('.minimap-button').on('click', function() {
+      // HANDLE IT
+      _this.handleClick(this);
+    });
+  },
+
+  handleClick: function(elem) {
+    var _this = this;
+
+    // Parse targets position JSON from data attr
+    var pos = JSON.parse($(elem).attr('data-pos'));
+    var col = pos.col;
+    var row = pos.row;
+
+    // Multiply positions by window sizes to get new map coordinates
+    var x = col * Site.Map.window.width * -1;
+    var y = row * Site.Map.window.height * -1;
+
+    // Move map to new coordinates
+    // moveIndicator is called by this function
+    Site.Map.moveMap(x,y);
+  },
+
+  moveIndicator: function(x,y) {
+    var _this = this;
+
+    // Multiply map position by minimap scale.
+    // Map moves to negative coordinates,
+    // Minimap indicator moves positive
+    var minimapX = x * -(_this.minimapScale);
+    var minimapY = y * -(_this.minimapScale);
+
+    // If we don't know the indicator's current postion we get it
+    if (!_this.indicatorPosition) {
+      _this.indicatorPosition = Site.Map.getMapPosition(_this.minimapIndicator);
+    }
+
+    // Set new coordinates
+    _this.indicatorPosition[4] = minimapX;
+    _this.indicatorPosition[5] = minimapY;
+
+    // Apply new coordinates
+    _this.minimapIndicator.style.transform = 'matrix(' + _this.indicatorPosition.toString() + ')';
   },
 
 };
