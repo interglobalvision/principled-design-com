@@ -473,11 +473,11 @@ Site.Map = {
     // Get current element position (transform values)
     var transformMatrix = getComputedStyle(elem).transform; // Returns a string like "matrix(0,0,0,0,0,0)"
 
-    // Get only the values
-    transformMatrix = transformMatrix.replace('matrix(','').replace(')', ''); // Returns a string like "0,0,0,0,0,0"
+    // Get only the values as an array
+    transformMatrix = transformMatrix.replace(/3d|matrix|\(|\)|\s|/g,'').split(','); // Returns an array like ["0","0","0","0","0","0"]
 
-    // Make it into an array
-    transformMatrix = transformMatrix.split(', ').map( function(item) {
+    // Parse string values into int values
+    transformMatrix = transformMatrix.map( function(item) {
       return parseInt(item, 10);
     }); // Returns an array like [0,0,0,0,0,0]
 
