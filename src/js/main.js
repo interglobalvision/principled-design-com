@@ -332,6 +332,7 @@ Site.Map = {
 
     _this.panning = true;
 
+    // We use a timeout to delay the triggering
     _this.delayTimeout = setTimeout( function() {
       _this.startPanEvent();
       window.requestAnimationFrame(_this.pan.bind(_this));
