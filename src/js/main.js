@@ -529,6 +529,8 @@ Site.Fades = {
   handleMapPanning: function() {
     var _this = this;
 
+    var map = document.getElementById('map');
+
     map.addEventListener('startpan', function() {
       _this.isPanning = true;
 
@@ -571,14 +573,14 @@ Site.Fades = {
         // Mouseleave text content
         // Fadein map content
         _this.$mapContent.removeClass('fade-element');
-      },
+      }
     );
   },
 };
 
 
 Site.Minimap = {
-  minimapScale: .03,
+  minimapScale: 0.03,
   indicatorPosition: false,
   init: function() {
     var _this = this;
