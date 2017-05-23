@@ -78,6 +78,22 @@ $metabox = array(
       'type' => 'text',
     ),
 
+    // DB-IP
+
+    array(
+      'name' => __( 'db-ip (geolocalization API)', 'cmb2' ),
+      'desc' => __( '', 'cmb2' ),
+      'id'   => $prefix . 'db_ip',
+      'type' => 'title',
+    ),
+    array(
+      'name' => __( 'API Key', 'IGV' ),
+      'desc' => __( '', 'IGV' ),
+      'id'   => $prefix . 'dbip_api_key',
+      'type' => 'text',
+      'default' => '',
+    ),
+
     // BOILER
 
     array(
