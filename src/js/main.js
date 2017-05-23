@@ -15,6 +15,7 @@ Site = {
     $(document).ready(function () {
       Site.Shapes.init();
       Site.Map.init();
+      Site.Fades.init();
       Site.Minimap.init();
     });
 
@@ -502,9 +503,73 @@ Site.Map = {
 
 };
 
+Site.Fades = {
+  $textContent: $('#main-content'),
+  $mapContent: $('.map-block-content'),
+  isPanning: false,
+  isHoveringText: false,
+  init: function() {
+    var _this = this;
+
+    _this.handleMapPanning();
+    _this.handleTextHover();
+  },
+
+  handleMapPanning: function() {
+    var _this = this;
+
+    var map = document.getElementById('map');
+
+    map.addEventListener('startpan', function() {
+      _this.isPanning = true;
+
+      // Fadeout text content
+      _this.$textContent.addClass('fade-element');
+
+      // Fadein map content
+      _this.$mapContent.removeClass('fade-element');
+    });
+
+    map.addEventListener('stoppan', function() {
+      _this.isPanning = false;
+
+      // Fadein text content
+      _this.$textContent.removeClass('fade-element');
+
+      if (_this.isHoveringText) {
+        // If hovering text: fadeout map content
+        _this.$mapContent.addClass('fade-element');
+      }
+    });
+  },
+
+  handleTextHover: function() {
+    var _this = this;
+
+    _this.$textContent.hover(
+      function() {
+        _this.isHoveringText = true;
+
+        if (!_this.isPanning) {
+          // Mouseenter text content
+          // If not panning map: fadeout map content
+          _this.$mapContent.addClass('fade-element');
+        }
+      },
+      function() {
+        _this.isHoveringText = false;
+
+        // Mouseleave text content
+        // Fadein map content
+        _this.$mapContent.removeClass('fade-element');
+      }
+    );
+  },
+};
+
 
 Site.Minimap = {
-  minimapScale: .03,
+  minimapScale: 0.03,
   indicatorPosition: false,
   init: function() {
     var _this = this;
@@ -528,10 +593,9 @@ Site.Minimap = {
   handleClick: function(elem) {
     var _this = this;
 
-    // Parse targets position JSON from data attr
-    var pos = JSON.parse($(elem).attr('data-pos'));
-    var col = pos.col;
-    var row = pos.row;
+    // Get grid position from target elem data attrs
+    var col = $(elem).attr('data-col');
+    var row = $(elem).attr('data-row');
 
     // Multiply positions by window sizes to get new map coordinates
     var x = col * Site.Map.window.width * -1;
