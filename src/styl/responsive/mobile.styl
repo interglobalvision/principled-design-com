@@ -21,14 +21,19 @@ $fade-duration = .3s
 
 .header-menu-item
   cursor: pointer
+  &:after
+    display: flex
+    height: 0
+    content: '➞'
+    align-items: center
+    overflow: hidden
+    transition: height .5s
   a
     display: block
 
 .header-menu-active
   &:after
-    display: block
-    padding: .7rem 0
-    content: '➞'
+    height: 2.8rem
 
 $main-content-offset = $margin-small + $margin-mid
 
