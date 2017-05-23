@@ -604,10 +604,9 @@ Site.Minimap = {
   handleClick: function(elem) {
     var _this = this;
 
-    // Parse targets position JSON from data attr
-    var pos = JSON.parse($(elem).attr('data-pos'));
-    var col = pos.col;
-    var row = pos.row;
+    // Get grid position from target elem data attrs
+    var col = $(elem).attr('data-col');
+    var row = $(elem).attr('data-row');
 
     // Multiply positions by window sizes to get new map coordinates
     var x = col * Site.Map.window.width * -1;
