@@ -93,7 +93,7 @@ Site.Shapes = {
   patternMax: 4,
   currentPattern: 0,
   timer: null,
-  interval: 500,
+  interval: 1000,
   animating: false,
 
   init: function() {
@@ -115,17 +115,6 @@ Site.Shapes = {
 
   showPattern: function() {
     var _this = this;
-
-    // Choose 1 or 0
-    var patternStyle = parseInt(Math.random() * 2);
-
-    if (patternStyle === 1) {
-      // If 1, fill paths
-      $('#background-pattern-holder').addClass('fill-path');
-    } else {
-      // If 0, stroke paths
-      $('#background-pattern-holder').addClass('stroke-path');
-    }
 
     // Assign random current pattern array index
     _this.currentPattern = Math.floor(Math.random() * (_this.patternMax - _this.patternMin + 1)) + _this.patternMin;
