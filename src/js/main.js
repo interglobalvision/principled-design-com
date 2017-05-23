@@ -17,6 +17,10 @@ Site = {
       Site.Map.init();
       Site.Fades.init();
       Site.Minimap.init();
+
+      $('#header-name').on('click', function() {
+        _this.Map.moveMap(Site.Map.window.width * -1, Site.Map.window.height * -1);
+      });
     });
 
   },
