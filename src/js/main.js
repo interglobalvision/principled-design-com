@@ -94,7 +94,7 @@ Site.Shapes = {
   patternMax: 4,
   currentPattern: 0,
   timer: null,
-  interval: 500,
+  interval: 1000,
   animating: false,
 
   init: function() {
@@ -116,17 +116,6 @@ Site.Shapes = {
 
   showPattern: function() {
     var _this = this;
-
-    // Choose 1 or 0
-    var patternStyle = parseInt(Math.random() * 2);
-
-    if (patternStyle === 1) {
-      // If 1, fill paths
-      $('#background-pattern-holder').addClass('fill-path');
-    } else {
-      // If 0, stroke paths
-      $('#background-pattern-holder').addClass('stroke-path');
-    }
 
     // Assign random current pattern array index
     _this.currentPattern = Math.floor(Math.random() * (_this.patternMax - _this.patternMin + 1)) + _this.patternMin;
@@ -474,11 +463,11 @@ Site.Map = {
     // Get current element position (transform values)
     var transformMatrix = getComputedStyle(elem).transform; // Returns a string like "matrix(0,0,0,0,0,0)"
 
-    // Get only the values
-    transformMatrix = transformMatrix.replace('matrix(','').replace(')', ''); // Returns a string like "0,0,0,0,0,0"
+    // Get only the values as an array
+    transformMatrix = transformMatrix.replace(/3d|matrix|\(|\)|\s|/g,'').split(','); // Returns an array like ["0","0","0","0","0","0"]
 
-    // Make it into an array
-    transformMatrix = transformMatrix.split(', ').map( function(item) {
+    // Parse string values into int values
+    transformMatrix = transformMatrix.map( function(item) {
       return parseInt(item, 10);
     }); // Returns an array like [0,0,0,0,0,0]
 

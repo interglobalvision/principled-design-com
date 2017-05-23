@@ -151,31 +151,18 @@ $main-content-offset = $margin-small + $margin-mid
     position: absolute
     z-index: 0
     opacity: 0
-    transition: opacity 1s
 
     path,
     polygon
-      stroke-width: 0
       fill: $color-white
-      stroke: $color-white
-      stroke-width: 0
+      stroke: $color-yellow
+      stroke-width: 10px
       stroke-miterlimit: 10
       stroke-linejoin: round
       // transition: fill $transition-duration, stroke $transition-duration, stroke-width $transition-duration
 
     &.show
       opacity: 1
-  &.stroke-path
-    svg
-      path,
-      polygon
-        stroke: $color-yellow
-        stroke-width: 10px
-  &.fill-path
-    svg
-      path,
-      polygon
-        fill: $color-yellow
 
 @media screen and (orientation: landscape)
   #background-pattern-holder svg
