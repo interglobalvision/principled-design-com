@@ -17,10 +17,7 @@ Site = {
       Site.Map.init();
       Site.Fades.init();
       Site.Minimap.init();
-
-      $('#header-name').on('click', function() {
-        _this.Map.moveMap(Site.Map.window.width * -1, Site.Map.window.height * -1);
-      });
+      Site.Nav.init();
     });
 
   },
@@ -37,6 +34,24 @@ Site = {
       string = string.replace(/ ([^ ]*)$/,'&nbsp;$1');
       $(this).html(string);
     });
+  },
+};
+
+Site.Nav = {
+  init: function() {
+    this.bind();
+  },
+
+  bind: function() {
+    var _this = this;
+
+    $('#header-name').on('click', function() {
+      _this.reset()
+    });
+  },
+
+  reset: function() {
+    Site.Map.moveMap(Site.Map.window.width * -1, Site.Map.window.height * -1);
   },
 };
 
