@@ -52,6 +52,7 @@ Site.Nav = {
 
   reset: function() {
     Site.Map.moveMap(Site.Map.window.width * -1, Site.Map.window.height * -1);
+    Site.Router.resetContent();
     Site.Router.cleanUrl();
   },
 };
@@ -80,11 +81,15 @@ Site.Router = {
     var _this = this;
 
     if (hash) {
-      $('.page-content').removeClass('page-content-active');
+      _this.resetContent();
       $('.page-content[data-slug="' + hash + '"]').addClass('page-content-active');
 
       _this.setMenuActive(hash);
     }
+  },
+
+  resetContent: function() {
+    $('.page-content').removeClass('page-content-active');
   },
 
   setMenuActive: function(hash) {
