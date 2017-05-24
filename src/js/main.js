@@ -416,10 +416,6 @@ Site.Map = {
       console.log('Geolocation not returned by the server');
     }
 
-    // THIS IS FOR DEVELOPING WHILE WE GET THE REAL API KEY
-    WP.clientGeolocation.latitude = '0'; // -90 – 90 deg
-    WP.clientGeolocation.longitude = '40'; // -180 – 180 deg
-
     if (WP.clientGeolocation.latitude && WP.clientGeolocation.longitude) {
 
       // NOTES:
