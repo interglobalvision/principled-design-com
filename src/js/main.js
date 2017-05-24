@@ -46,12 +46,13 @@ Site.Nav = {
     var _this = this;
 
     $('#header-name').on('click', function() {
-      _this.reset()
+      _this.reset();
     });
   },
 
   reset: function() {
     Site.Map.moveMap(Site.Map.window.width * -1, Site.Map.window.height * -1);
+    Site.Router.cleanUrl();
   },
 };
 
@@ -97,6 +98,11 @@ Site.Router = {
 
   parseHash: function(rawHash) {
     return rawHash.substr(3);
+  },
+
+  cleanUrl: function() {
+    window.location.hash = '';
+    history.pushState({}, '', './');
   },
 };
 
