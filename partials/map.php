@@ -9,51 +9,40 @@
     ?>
   </div>
 
+<?php
+  for ($i = 1; $i < 10; $i++) {
+    $image_id = IGV_get_option('_igv_image_options', '_igv_' . $i . '_image_id');
+    $mp4 = IGV_get_option('_igv_image_options', '_igv_' . $i . '_mp4');
+    $webm = IGV_get_option('_igv_image_options', '_igv_' . $i . '_webm');
+    $ogv = IGV_get_option('_igv_image_options', '_igv_' . $i . '_ovg');
+?>
   <div class="map-block">
     <div class="map-block-content">
-      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-3.jpg'; ?>">
+      <?php
+        if (empty($mp4)) {
+          echo wp_get_attachment_image($image_id, 'map');
+        } else if ($mp4 && $webm) {
+          $poster = wp_get_attachment_image_src($image_id, 'map');
+      ?>
+      <video autoplay muted poster="<?php echo $poster[0]; ?>">
+        <source src="<?php echo $mp4; ?>" type="video/mp4" />
+        <source src="<?php echo $webm; ?>" type="video/webm" />
+      <?php
+        if ($ogv) {
+      ?>
+        <source src="<?php echo $ogv; ?>" type="video/ogv" />
+      <?php
+        }
+      ?>
+      </video>
+      <?php
+        }
+      ?>
     </div>
   </div>
-  <div class="map-block">
-    <div class="map-block-content">
-      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-4.jpg'; ?>">
-    </div>
-  </div>
-  <div class="map-block">
-    <div class="map-block-content">
-      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-1.jpg'; ?>">
-    </div>
-  </div>
-  <div class="map-block">
-    <div class="map-block-content">
-      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-2.jpg'; ?>">
-    </div>
-  </div>
-  <div class="map-block">
-    <div class="map-block-content">
-      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-4.jpg'; ?>">
-    </div>
-  </div>
-  <div class="map-block">
-    <div class="map-block-content">
-      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-3.jpg'; ?>">
-    </div>
-  </div>
-  <div class="map-block">
-    <div class="map-block-content">
-      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-1.jpg'; ?>">
-    </div>
-  </div>
-  <div class="map-block">
-    <div class="map-block-content">
-      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-2.jpg'; ?>">
-    </div>
-  </div>
-  <div class="map-block">
-    <div class="map-block-content">
-      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-3.jpg'; ?>">
-    </div>
-  </div>
+<?php
+  }
+?>
 </div>
 
 <div id="lat-long">
