@@ -4,13 +4,16 @@ require "dbip-client.class.php";
 // Custom functions (like special queries, etc)
 
 function get_client_geolocation() {
-  $client_ip = get_client_ip();
-
   $api_key = IGV_get_option('_igv_site_options', '_igv_dbip_api_key');
 
-  $dbip = new DBIP_Client($api_key);
+  if ($api_key) {
+    $dbip = new DBIP_Client($api_key);
+    $client_ip = get_client_ip();
 
-  return $dbip->Get_Address_Info($client_ip);
+    return $dbip->Get_Address_Info($client_ip);
+  } else {
+    return '0';
+  }
 
 }
 
