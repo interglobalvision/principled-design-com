@@ -224,6 +224,7 @@ Site.Shapes = {
 Site.Map = {
   panZoneSize: 150, // in pixels
   panSpeed: 0.04,
+  panDelay: 100, // in ms
   panning: false, // is it panning or not?
   window: {},
   center: {},
@@ -314,6 +315,8 @@ Site.Map = {
 
     _this.panning = false;
 
+    clearTimeout(_this.delayTimeout);
+
     _this.stopPanEvent();
 
   },
@@ -350,9 +353,11 @@ Site.Map = {
 
     _this.panning = true;
 
-    _this.startPanEvent();
-
-    window.requestAnimationFrame(_this.pan.bind(_this));
+    // We use a timeout to delay the triggering
+    _this.delayTimeout = setTimeout( function() {
+      _this.startPanEvent();
+      window.requestAnimationFrame(_this.pan.bind(_this));
+    }, _this.panDelay);
 
   },
 
