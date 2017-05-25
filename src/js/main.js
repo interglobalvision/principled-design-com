@@ -17,6 +17,7 @@ Site = {
       Site.Map.init();
       Site.Fades.init();
       Site.Minimap.init();
+      Site.Nav.init();
     });
 
   },
@@ -33,6 +34,26 @@ Site = {
       string = string.replace(/ ([^ ]*)$/,'&nbsp;$1');
       $(this).html(string);
     });
+  },
+};
+
+Site.Nav = {
+  init: function() {
+    this.bind();
+  },
+
+  bind: function() {
+    var _this = this;
+
+    $('#header-name').on('click', function() {
+      _this.reset();
+    });
+  },
+
+  reset: function() {
+    Site.Map.moveMap(Site.Map.window.width * -1, Site.Map.window.height * -1);
+    Site.Router.resetContent();
+    Site.Router.cleanUrl();
   },
 };
 
@@ -60,11 +81,15 @@ Site.Router = {
     var _this = this;
 
     if (hash) {
-      $('.page-content').removeClass('page-content-active');
+      _this.resetContent();
       $('.page-content[data-slug="' + hash + '"]').addClass('page-content-active');
 
       _this.setMenuActive(hash);
     }
+  },
+
+  resetContent: function() {
+    $('.page-content').removeClass('page-content-active');
   },
 
   setMenuActive: function(hash) {
@@ -78,6 +103,11 @@ Site.Router = {
 
   parseHash: function(rawHash) {
     return rawHash.substr(3);
+  },
+
+  cleanUrl: function() {
+    window.location.hash = '';
+    history.pushState({}, '', './');
   },
 };
 
