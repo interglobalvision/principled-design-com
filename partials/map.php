@@ -13,9 +13,11 @@
   $grid_group = IGV_get_option('_igv_image_options','_igv_map_grid_group');
 
   // randomize grid items array
-  $grid_group = shuffle($grid_group);
+  shuffle($grid_group);
 
   $group_length = count($grid_group);
+
+
 
   $i = 0;
 
