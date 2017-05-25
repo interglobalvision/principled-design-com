@@ -7,7 +7,7 @@ function make_map_grid_unit($item) {
 <div class="map-block">
   <div class="map-block-content">
     <?php
-      if (!empty($item['image_id']) {
+      if (!empty($item['image_id'])) {
         if (!empty($item['mp4']) && !empty($item['webm'])) {
           // show the video
           $poster = wp_get_attachment_image_src($item['image_id'], 'map');
