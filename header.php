@@ -27,7 +27,7 @@
 
 <section id="main-container">
   <nav id="header" class="font-bold">
-    <h1 id="header-name"><?php bloginfo('name'); ?></h1>
+    <h1 id="header-name" class="u-pointer"><?php bloginfo('name'); ?></h1>
 
 <?php
 $args = array(

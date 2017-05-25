@@ -15,7 +15,9 @@ Site = {
     $(document).ready(function () {
       Site.Shapes.init();
       Site.Map.init();
+      Site.Fades.init();
       Site.Minimap.init();
+      Site.Nav.init();
     });
 
   },
@@ -32,6 +34,26 @@ Site = {
       string = string.replace(/ ([^ ]*)$/,'&nbsp;$1');
       $(this).html(string);
     });
+  },
+};
+
+Site.Nav = {
+  init: function() {
+    this.bind();
+  },
+
+  bind: function() {
+    var _this = this;
+
+    $('#header-name').on('click', function() {
+      _this.reset();
+    });
+  },
+
+  reset: function() {
+    Site.Map.moveMap(Site.Map.window.width * -1, Site.Map.window.height * -1);
+    Site.Router.resetContent();
+    Site.Router.cleanUrl();
   },
 };
 
@@ -59,11 +81,16 @@ Site.Router = {
     var _this = this;
 
     if (hash) {
-      $('.page-content').removeClass('page-content-active');
+      _this.resetContent();
       $('.page-content[data-slug="' + hash + '"]').addClass('page-content-active');
 
       _this.setMenuActive(hash);
     }
+  },
+
+  resetContent: function() {
+    $('.page-content').removeClass('page-content-active');
+    $('.header-menu-active').removeClass('header-menu-active');
   },
 
   setMenuActive: function(hash) {
@@ -77,6 +104,11 @@ Site.Router = {
 
   parseHash: function(rawHash) {
     return rawHash.substr(3);
+  },
+
+  cleanUrl: function() {
+    window.location.hash = '';
+    history.pushState({}, '', './');
   },
 };
 
@@ -93,7 +125,7 @@ Site.Shapes = {
   patternMax: 4,
   currentPattern: 0,
   timer: null,
-  interval: 500,
+  interval: 1000,
   animating: false,
 
   init: function() {
@@ -115,17 +147,6 @@ Site.Shapes = {
 
   showPattern: function() {
     var _this = this;
-
-    // Choose 1 or 0
-    var patternStyle = parseInt(Math.random() * 2);
-
-    if (patternStyle === 1) {
-      // If 1, fill paths
-      $('#background-pattern-holder').addClass('fill-path');
-    } else {
-      // If 0, stroke paths
-      $('#background-pattern-holder').addClass('stroke-path');
-    }
 
     // Assign random current pattern array index
     _this.currentPattern = Math.floor(Math.random() * (_this.patternMax - _this.patternMin + 1)) + _this.patternMin;
@@ -478,11 +499,11 @@ Site.Map = {
     // Get current element position (transform values)
     var transformMatrix = getComputedStyle(elem).transform; // Returns a string like "matrix(0,0,0,0,0,0)"
 
-    // Get only the values
-    transformMatrix = transformMatrix.replace('matrix(','').replace(')', ''); // Returns a string like "0,0,0,0,0,0"
+    // Get only the values as an array
+    transformMatrix = transformMatrix.replace(/3d|matrix|\(|\)|\s|/g,'').split(','); // Returns an array like ["0","0","0","0","0","0"]
 
-    // Make it into an array
-    transformMatrix = transformMatrix.split(', ').map( function(item) {
+    // Parse string values into int values
+    transformMatrix = transformMatrix.map( function(item) {
       return parseInt(item, 10);
     }); // Returns an array like [0,0,0,0,0,0]
 
@@ -518,9 +539,73 @@ Site.Map = {
 
 };
 
+Site.Fades = {
+  $textContent: $('#main-content'),
+  $mapContent: $('.map-block-content'),
+  isPanning: false,
+  isHoveringText: false,
+  init: function() {
+    var _this = this;
+
+    _this.handleMapPanning();
+    _this.handleTextHover();
+  },
+
+  handleMapPanning: function() {
+    var _this = this;
+
+    var map = document.getElementById('map');
+
+    map.addEventListener('startpan', function() {
+      _this.isPanning = true;
+
+      // Fadeout text content
+      _this.$textContent.addClass('fade-element');
+
+      // Fadein map content
+      _this.$mapContent.removeClass('fade-element');
+    });
+
+    map.addEventListener('stoppan', function() {
+      _this.isPanning = false;
+
+      // Fadein text content
+      _this.$textContent.removeClass('fade-element');
+
+      if (_this.isHoveringText) {
+        // If hovering text: fadeout map content
+        _this.$mapContent.addClass('fade-element');
+      }
+    });
+  },
+
+  handleTextHover: function() {
+    var _this = this;
+
+    _this.$textContent.hover(
+      function() {
+        _this.isHoveringText = true;
+
+        if (!_this.isPanning) {
+          // Mouseenter text content
+          // If not panning map: fadeout map content
+          _this.$mapContent.addClass('fade-element');
+        }
+      },
+      function() {
+        _this.isHoveringText = false;
+
+        // Mouseleave text content
+        // Fadein map content
+        _this.$mapContent.removeClass('fade-element');
+      }
+    );
+  },
+};
+
 
 Site.Minimap = {
-  minimapScale: .03,
+  minimapScale: 0.03,
   indicatorPosition: false,
   init: function() {
     var _this = this;
@@ -544,10 +629,9 @@ Site.Minimap = {
   handleClick: function(elem) {
     var _this = this;
 
-    // Parse targets position JSON from data attr
-    var pos = JSON.parse($(elem).attr('data-pos'));
-    var col = pos.col;
-    var row = pos.row;
+    // Get grid position from target elem data attrs
+    var col = $(elem).attr('data-col');
+    var row = $(elem).attr('data-row');
 
     // Multiply positions by window sizes to get new map coordinates
     var x = col * Site.Map.window.width * -1;
