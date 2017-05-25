@@ -12,20 +12,22 @@
 <?php
   $grid_group = IGV_get_option('_igv_image_options','_igv_map_grid_group');
 
-  // randomize grid items array
-  shuffle($grid_group);
+  if ($grid_group) {
+    // randomize grid items array
+    shuffle($grid_group);
 
-  $grid_group = array_slice($grid_group, 0, 9);
+    $grid_group = array_slice($grid_group, 0, 9);
 
-  $group_length = count($grid_group);
+    $group_length = count($grid_group);
 
-  $i = 0;
+    $i = 0;
 
-  while($i < $group_length) {
-    // for each item in group, make grid unit
-    make_map_grid_unit($grid_group[$i]);
+    while($i < $group_length) {
+      // for each item in group, make grid unit
+      make_map_grid_unit($grid_group[$i]);
 
-    $i++;
+      $i++;
+    }
   }
 ?>
 </div>
