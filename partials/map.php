@@ -9,51 +9,25 @@
     ?>
   </div>
 
-  <div class="map-block">
-    <div class="map-block-content">
-      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-3.jpg'; ?>">
-    </div>
-  </div>
-  <div class="map-block">
-    <div class="map-block-content">
-      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-4.jpg'; ?>">
-    </div>
-  </div>
-  <div class="map-block">
-    <div class="map-block-content">
-      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-1.jpg'; ?>">
-    </div>
-  </div>
-  <div class="map-block">
-    <div class="map-block-content">
-      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-2.jpg'; ?>">
-    </div>
-  </div>
-  <div class="map-block">
-    <div class="map-block-content">
-      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-4.jpg'; ?>">
-    </div>
-  </div>
-  <div class="map-block">
-    <div class="map-block-content">
-      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-3.jpg'; ?>">
-    </div>
-  </div>
-  <div class="map-block">
-    <div class="map-block-content">
-      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-1.jpg'; ?>">
-    </div>
-  </div>
-  <div class="map-block">
-    <div class="map-block-content">
-      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-2.jpg'; ?>">
-    </div>
-  </div>
-  <div class="map-block">
-    <div class="map-block-content">
-      <img src="<?php echo get_template_directory_uri() . '/dist/img/test-img-3.jpg'; ?>">
-    </div>
-  </div>
+<?php
+  $grid_group = IGV_get_option('_igv_image_options','_igv_map_grid_group');
+
+  // randomize grid items array
+  shuffle($grid_group);
+
+  $grid_group = array_slice($grid_group, 0, 9);
+
+  $group_length = count($grid_group);
+
+  $i = 0;
+
+  while($i < $group_length) {
+    // for each item in group, make grid unit
+    make_map_grid_unit($grid_group[$i]);
+
+    $i++;
+  }
+?>
 </div>
 
 <div id="lat-long">

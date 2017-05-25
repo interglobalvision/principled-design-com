@@ -2,6 +2,11 @@
 
 $menu-width = 250px
 
+$fade-duration = .3s
+
+.fade-element
+  opacity: .3
+
 #header
   position: fixed
   width: $menu-width
@@ -9,31 +14,38 @@ $menu-width = 250px
   z-index: 200
   font-family: 'Calibre-Bold', font-stack('Helvetica')
   font-weight: 700
+  transition: opacity $fade-duration
 
 #header-name
   height: $margin-mid
 
 .header-menu-item
   cursor: pointer
+  &:after
+    display: flex
+    height: 0
+    content: '➞'
+    align-items: center
+    overflow: hidden
+    transition: height $fade-duration
   a
     display: block
 
 .header-menu-active
   &:after
-    display: block
-    padding: .7rem 0
-    content: '➞'
+    height: 2.8rem
 
 $main-content-offset = $margin-small + $margin-mid
 
 #main-content-container
   position: fixed
   width: 'calc(100vw - %s)' % ($menu-width + $margin-small)
-  left: $menu-width + $margin-small
+  left: $menu-width
   height: 100vh
   z-index: 200
   padding-top: $main-content-offset
   overflow-y: scroll
+  transition: opacity $fade-duration
 
 #main-content
   width: 360px
@@ -76,6 +88,7 @@ $main-content-offset = $margin-small + $margin-mid
   display: flex
   justify-content: center
   align-items: center
+  transition: opacity $fade-duration
   img
     max-width: 50vw
 
@@ -143,31 +156,18 @@ $main-content-offset = $margin-small + $margin-mid
     position: absolute
     z-index: 0
     opacity: 0
-    transition: opacity 1s
 
     path,
     polygon
-      stroke-width: 0
       fill: $color-white
-      stroke: $color-white
-      stroke-width: 0
+      stroke: $color-yellow
+      stroke-width: 10px
       stroke-miterlimit: 10
       stroke-linejoin: round
       // transition: fill $transition-duration, stroke $transition-duration, stroke-width $transition-duration
 
     &.show
       opacity: 1
-  &.stroke-path
-    svg
-      path,
-      polygon
-        stroke: $color-yellow
-        stroke-width: 10px
-  &.fill-path
-    svg
-      path,
-      polygon
-        fill: $color-yellow
 
 @media screen and (orientation: landscape)
   #background-pattern-holder svg
