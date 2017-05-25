@@ -412,11 +412,9 @@ Site.Map = {
   geolocation: function() {
     var _this =  this;
 
-    if (WP.clientGeolocation === '0') {
+    if (!WP.clientGeolocation) {
       console.log('Geolocation not returned by the server');
-    }
-
-    if (WP.clientGeolocation.latitude && WP.clientGeolocation.longitude) {
+    } else if (WP.clientGeolocation.latitude && WP.clientGeolocation.longitude) {
 
       // NOTES:
       //

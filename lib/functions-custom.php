@@ -12,7 +12,7 @@ function get_client_geolocation() {
 
     return $dbip->Get_Address_Info($client_ip);
   } else {
-    return '0';
+    return false;
   }
 
 }
