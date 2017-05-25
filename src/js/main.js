@@ -1,5 +1,5 @@
 /* jshint browser: true, devel: true, indent: 2, curly: true, eqeqeq: true, futurehostile: true, latedef: true, undef: true, unused: true */
-/* global $, jQuery, document, Site, Modernizr */
+/* global $, jQuery, document, Site, Modernizr, WP */
 
 Site = {
   mobileThreshold: 601,
@@ -14,9 +14,9 @@ Site = {
 
     $(document).ready(function () {
       Site.Shapes.init();
+      Site.Minimap.init();
       Site.Map.init();
       Site.Fades.init();
-      Site.Minimap.init();
       Site.Nav.init();
     });
 
@@ -240,6 +240,9 @@ Site.Map = {
     // Set map element
     _this.map = document.getElementById('map');
 
+    // Move map to match geolocation
+    _this.geolocation();
+
     // init pan zones
     _this.setPanZones();
 
@@ -249,7 +252,9 @@ Site.Map = {
     // Detect mouse outside window
     document.body.addEventListener('mouseleave', _this.stopPanning.bind(_this));
 
+    // Bind hover event on #header
     _this.bindHeaderMouseOver();
+
   },
 
   getWindowSize: function() {
@@ -304,7 +309,7 @@ Site.Map = {
 
     if (_this.isInsidePanZone() && !_this.panning) {
       _this.triggerPanning(); // Trigger animation
-    } else if(_this.panning && !_this.isInsidePanZone()) {
+    } else if (_this.panning && !_this.isInsidePanZone()) {
       _this.stopPanning(); // Stop animation
     }
 
@@ -326,7 +331,7 @@ Site.Map = {
     var _this =  this;
 
     // Check if mouse is over header or it's childs
-    if(_this.mouseOnHeader) {
+    if (_this.mouseOnHeader) {
       return false;
     }
 
@@ -421,26 +426,6 @@ Site.Map = {
     var newX = _this.mapPosition[4] + (translation * Math.cos(angle));
     var newY = _this.mapPosition[5] + (translation * Math.sin(angle));
 
-    // Check for left limit
-    if (newX >= 0) {
-      newX = 0;
-    }
-
-    // Check for right limit
-    if (newX <= _this.window.width * -2) {
-      newX = _this.window.width * -2;
-    }
-
-    // Check for upper limit
-    if (newY >= 0) {
-      newY = 0;
-    }
-
-    // Check for bottom limit
-    if (newY <= _this.window.height * -2) {
-      newY = _this.window.height * -2;
-    }
-
     // Move the map
     _this.moveMap(newX,newY);
 
@@ -449,9 +434,74 @@ Site.Map = {
 
   },
 
+  // Check if golocation is available and move the map to that equivalent location
+  geolocation: function() {
+    var _this =  this;
+
+    if (!WP.clientGeolocation) {
+      console.log('Geolocation not returned by the server');
+    } else if (WP.clientGeolocation.latitude && WP.clientGeolocation.longitude) {
+
+      // NOTES:
+      //
+      // # LONGITUDE
+      //
+      // Goes -180 to 180 deg. 0 is Greenwich. Negative is to the east,
+      // positive is west. In the map context it goes from 0 to
+      // _this.window.width * -2.
+      // Equivalent to the X axis
+      //
+      // # LATITUDE
+      //
+      // Goes from -90 to 90 deg. 0 deg is the equator, +- 90 deg are the
+      // poles. In the map context it goes from  0 to _this.window.height * -2
+      // Equivalent to the Y axis
+      //
+
+      // Turn strings into numbers
+      var longitude = Number(WP.clientGeolocation.longitude);
+      var latitude = Number(WP.clientGeolocation.latitude);
+
+      // Transport longitude to only positive values so it goes from 0 to 360
+      var translatedLongitude = longitude + 180;
+
+      // Transport latitude to only negative values so it goes from -180 to 0
+      var translatedLatitude = latitude - 90;
+
+      // Magic math, jk. It'ssic math.
+      var newX = (translatedLongitude * (_this.window.width * -2)) / 360;
+      var newY = (translatedLatitude * (_this.window.height * 2)) / 180;
+
+      // Move the map
+      _this.moveMap(newX,newY);
+    }
+  },
+
+
   // Move the map to given coordinates
   moveMap: function(x,y) {
     var _this =  this;
+
+    // Check for left limit
+    if (x >= 0) {
+      x = 0;
+    }
+
+    // Check for right limit
+    if (x <= _this.window.width * -2) {
+      x = _this.window.width * -2;
+    }
+
+    // Check for upper limit
+    if (y >= 0) {
+      y = 0;
+    }
+
+    // Check for bottom limit
+    if (y <= _this.window.height * -2) {
+      y = _this.window.height * -2;
+    }
+
 
     // If we don't know the map's current postion we get it
     if (!_this.mapPosition) {

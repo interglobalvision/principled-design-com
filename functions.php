@@ -15,10 +15,13 @@ function scripts_and_styles_method() {
 
   $is_admin = current_user_can('administrator') ? 1 : 0;
 
+  $client_geolocation = get_client_geolocation();
+
   $javascriptVars = array(
     'siteUrl' => home_url(),
     'themeUrl' => get_template_directory_uri(),
     'isAdmin' => $is_admin,
+    'clientGeolocation' => $client_geolocation,
   );
 
   wp_enqueue_script('javascript-library', $javascriptLibrary, '', '', true);
