@@ -14,8 +14,8 @@ Site = {
 
     $(document).ready(function () {
       Site.Shapes.init();
-      Site.Map.init();
       Site.Minimap.init();
+      Site.Map.init();
       Site.Fades.init();
       Site.Nav.init();
     });
