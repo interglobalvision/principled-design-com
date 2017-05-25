@@ -15,6 +15,8 @@
   // randomize grid items array
   shuffle($grid_group);
 
+  $grid_group = array_slice($grid_group, 0, 9);
+
   $group_length = count($grid_group);
 
   $i = 0;
