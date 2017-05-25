@@ -90,6 +90,7 @@ Site.Router = {
 
   resetContent: function() {
     $('.page-content').removeClass('page-content-active');
+    $('.header-menu-active').removeClass('header-menu-active');
   },
 
   setMenuActive: function(hash) {
