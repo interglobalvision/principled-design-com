@@ -17,8 +17,6 @@
 
   $group_length = count($grid_group);
 
-
-
   $i = 0;
 
   while($i < $group_length) {
