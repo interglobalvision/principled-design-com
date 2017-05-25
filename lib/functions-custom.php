@@ -46,7 +46,7 @@ function make_map_grid_unit($item) {
           // show the video
           $poster = wp_get_attachment_image_src($item['image_id'], 'map');
     ?>
-    <video autoplay muted poster="<?php echo $poster[0]; ?>">
+    <video autoplay muted loop poster="<?php echo $poster[0]; ?>">
       <source src="<?php echo $item['mp4']; ?>" type="video/mp4" />
       <source src="<?php echo $item['webm']; ?>" type="video/webm" />
     <?php
