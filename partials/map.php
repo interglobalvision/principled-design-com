@@ -32,6 +32,4 @@
 ?>
 </div>
 
-<div id="lat-long">
-  37° 47' 12.484", -122° 24' 0.9223"
-</div>
+<div id="lat-long"></div>

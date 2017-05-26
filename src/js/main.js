@@ -15,6 +15,7 @@ Site = {
     $(document).ready(function () {
       Site.Shapes.init();
       Site.Minimap.init();
+      Site.Coordinates.init();
       Site.Map.init();
       Site.Fades.init();
       Site.Nav.init();
@@ -717,6 +718,7 @@ Site.Minimap = {
 
     // Move map to new coordinates
     Site.Map.moveMap(x,y);
+
   },
 
   moveIndicator: function(event) {
@@ -743,6 +745,89 @@ Site.Minimap = {
     // Apply new coordinates
     _this.minimapIndicator.style.transform = 'matrix(' + _this.indicatorPosition.toString() + ')';
   },
+
+};
+
+Site.Coordinates = {
+  secondsDecimalsSize: 3, // round seconds to this decimals
+  init: function() {
+    var _this = this;
+
+    // Get coordinates element
+    _this.coordinatesHolder = document.getElementById('lat-long');
+
+    // Bind to mapmob
+    _this.bindMapMove();
+  },
+
+  bindMapMove: function() {
+    var _this = this;
+
+    // Bind to mapmove
+    var map = document.getElementById('map');
+
+    map.addEventListener('movemap', _this.updateCoordinates.bind(_this));
+  },
+
+  updateCoordinates: function(event) {
+    var _this = this;
+
+    // Get map position
+    var x = event.detail.map.position.x;
+    var y = event.detail.map.position.y;
+
+    // Convert position to lat, long
+    var coordinates = _this.convertToCoordinates(x,y);
+
+    // Update coordintaes in the markup
+    _this.coordinatesHolder.innerHTML = coordinates.lat + ", " + coordinates.long;
+
+  },
+
+  convertToCoordinates: function(x,y) {
+    var _this = this;
+
+    // Get window size
+    var windowWidth = Site.Map.window.width;
+    var windowHeight = Site.Map.window.height;
+
+    // Transport values to scales of (-180 - 180) for longitude and of (-90 - 90) for latitude
+    var long = ((x / (windowWidth * -2)) * 360) - 180;
+    var lat = ((y / (windowHeight * -2)) * 180 ) - 90;
+
+    // Convert values to DMS
+    long = _this.convertToDMS(long);
+    lat = _this.convertToDMS(lat);
+
+    // Make the coordinates object
+    var convertedCoordinates = {
+      lat: lat,
+      long: long,
+    };
+
+    return convertedCoordinates;
+
+  },
+
+  // (Object) Convert given degrees to DMS (degrees, minutes, seconds)
+  // Reference: http://www.rapidtables.com/convert/number/degrees-to-degrees-minutes-seconds.htm
+  convertToDMS: function(deg) {
+    var _this = this;
+
+    // Get Degrees
+    var d = Math.floor(deg);
+
+    // Get Minutes
+    var m = Math.floor((deg - d) * 60);
+
+    // Get Seconds
+    var s = (deg - d - m / 60) * 3600;
+
+    // Round Seconds
+    s = s.toFixed(_this.secondsDecimalsSize);
+
+    return (d + '° ' + m + '\' ' + s + '"');
+  }
 
 };
 
