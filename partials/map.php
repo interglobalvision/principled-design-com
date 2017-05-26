@@ -32,4 +32,4 @@
 ?>
 </div>
 
-<div id="lat-long"></div>
+<div id="lat-long" class="desktop-only"></div>

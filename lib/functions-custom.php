@@ -38,7 +38,7 @@ function get_client_ip() {
 
 function make_map_grid_unit($item) {
 ?>
-<div class="map-block">
+<div class="map-block desktop-only">
   <div class="map-block-content">
     <?php
       if (!empty($item['image_id'])) {

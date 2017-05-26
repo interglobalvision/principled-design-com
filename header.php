@@ -26,7 +26,7 @@
 <!--[if lt IE 9]><p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p><![endif]-->
 
 <section id="main-container">
-  <nav id="header" class="font-bold">
+  <nav id="header" class="desktop-only font-bold">
     <h1 id="header-name" class="u-pointer"><?php bloginfo('name'); ?></h1>
 
 <?php
