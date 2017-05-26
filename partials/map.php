@@ -13,10 +13,7 @@
   $grid_group = IGV_get_option('_igv_image_options','_igv_map_grid_group');
 
   if ($grid_group) {
-    // randomize grid items array
-    shuffle($grid_group);
-
-    $grid_group = array_slice($grid_group, 0, 9);
+    $grid_group = prepare_grid_data_array($grid_group);
 
     $group_length = count($grid_group);
 

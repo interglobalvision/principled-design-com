@@ -36,6 +36,14 @@ function get_client_ip() {
   return apply_filters( 'wpb_get_ip', $ip );
 }
 
+function prepare_grid_data_array($array) {
+
+    shuffle($array);
+
+    return array_slice($array, 0, 9);
+
+}
+
 function make_map_grid_unit($item) {
 ?>
 <div class="map-block">
