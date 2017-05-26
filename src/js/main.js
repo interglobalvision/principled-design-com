@@ -260,11 +260,17 @@ Site.Map = {
   },
 
   onResize: function() {
+    var _this =  this;
+
     // Set windowSize
     _this.getWindowSize();
 
     // init pan zones
     _this.setPanZones();
+
+    // Get current position
+    _this.mapPosition = _this.getElemPosition(_this.map);
+
   },
 
   getWindowSize: function() {
