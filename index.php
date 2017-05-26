@@ -21,6 +21,8 @@ if ( $query->have_posts() ) {
 
         <article <?php post_class('page-content'); ?> id="post-<?php the_ID(); ?>" data-slug="<?php echo $post->post_name; ?>">
 
+          <h3 class="font-bold margin-bottom-small mobile-only"><?php the_title(); ?></h3>
+
           <?php the_content(); ?>
 
         </article>

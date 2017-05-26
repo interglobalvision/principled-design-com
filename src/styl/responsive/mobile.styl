@@ -9,15 +9,17 @@ $fade-duration = .3s
 
 #header
   position: fixed
-  width: $menu-width
-  padding: $margin-small
+  width: 100vw
+  padding: $margin-basic
   z-index: 200
   font-family: 'Calibre-Bold', font-stack('Helvetica')
   font-weight: 700
-  transition: opacity $fade-duration
 
 #header-name
   height: $margin-mid
+
+#header-menu
+  display: none
 
 .header-menu-item
   cursor: pointer
@@ -35,27 +37,8 @@ $fade-duration = .3s
   &:after
     height: 2.8rem
 
-$main-content-offset = $margin-small + $margin-mid
-
-#main-content-container
-  position: fixed
-  width: 'calc(100vw - %s)' % ($menu-width + $margin-small)
-  left: $menu-width
-  height: 100vh
-  z-index: 200
-  padding-top: $main-content-offset
-  overflow-y: scroll
-  transition: opacity $fade-duration
-
-#main-content
-  width: 360px
-  transition: opacity $fade-duration
-
 .page-content
-  display: none
-
-.page-content-active
-  display: block
+  padding: $margin-basic
 
 // ******************************************************
 
@@ -73,13 +56,13 @@ $main-content-offset = $margin-small + $margin-mid
   flex-wrap: wrap
   transform: translate(-33.3333333%, -33.333333%)
   transition: transform 50ms linear
-  z-index: 100
+  z-index: -100
 
 .map-block
   position: relative
   width: 100vw
   height: 100vh
-  display: flex
+  display: none
   align-items: center
   justify-content: center
   font-size: 10em

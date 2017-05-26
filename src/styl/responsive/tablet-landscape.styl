@@ -3,13 +3,16 @@
 $menu-width = 295px
 
 #header
+  position: fixed
+  width: $menu-width
   padding: $margin-basic
+  transition: opacity $fade-duration
 
 #header-name
   height: $margin-mid
 
-#header
-  width: $menu-width
+#header-menu
+  display: initial
 
 $main-content-offset = $margin-basic + $margin-mid
 
@@ -17,13 +20,29 @@ $main-content-offset = $margin-basic + $margin-mid
   width: 'calc(100vw - %s)' % ($menu-width + $margin-basic)
   left: $menu-width
   padding-top: $main-content-offset
+  position: fixed
+  height: 100vh
+  z-index: 200
+  overflow-y: scroll
+  transition: opacity $fade-duration
 
 #main-content
   width: 410px
+  transition: opacity $fade-duration
+
+.page-content
+  display: none
+  padding: 0
+
+.page-content-active
+  display: block
 
 // ******************************************************
 
 // MAP
+
+.map-block
+  display: flex
 
 #lat-long
   top: $margin-basic
