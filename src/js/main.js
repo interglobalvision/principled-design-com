@@ -267,10 +267,6 @@ Site.Map = {
 
     // init pan zones
     _this.setPanZones();
-
-    // Get current position
-    _this.mapPosition = _this.getElemPosition(_this.map);
-
   },
 
   getWindowSize: function() {
