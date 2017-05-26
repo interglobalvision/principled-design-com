@@ -26,6 +26,8 @@ Site = {
   onResize: function() {
     var _this = this;
 
+    Site.Map.onResize();
+
   },
 
   fixWidows: function() {
@@ -256,6 +258,16 @@ Site.Map = {
     // Bind hover event on #header
     _this.bindHeaderMouseOver();
 
+  },
+
+  onResize: function() {
+    var _this =  this;
+
+    // Set windowSize
+    _this.getWindowSize();
+
+    // init pan zones
+    _this.setPanZones();
   },
 
   getWindowSize: function() {
