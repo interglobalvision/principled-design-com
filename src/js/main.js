@@ -515,8 +515,26 @@ Site.Map = {
     // Apply new coordinates
     _this.map.style.transform = 'matrix(' + _this.mapPosition.toString() + ')';
 
-    // Move minimap position indicator
-    Site.Minimap.moveIndicator(x,y);
+    _this.triggerMoveEvent(x,y);
+  },
+
+  triggerMoveEvent: function(x,y) {
+    var _this =  this;
+
+    // Create custom event
+    var movemapEvent = new CustomEvent('movemap', {
+      detail: {
+        map: {
+          position: {
+            x: x,
+            y: y
+          },
+        },
+      },
+    });
+
+    // Dispatch movemapEvent
+    _this.map.dispatchEvent(movemapEvent);
   },
 
   // Return distance between center and mouse positon in pixels
@@ -664,6 +682,7 @@ Site.Minimap = {
     _this.minimapIndicator = document.getElementById('minimap-indicator');
 
     _this.bindClick();
+    _this.bindMapMove();
   },
 
   bindClick: function() {
@@ -674,6 +693,15 @@ Site.Minimap = {
       // HANDLE IT
       _this.handleClick(this);
     });
+  },
+
+  bindMapMove: function() {
+    var _this = this;
+
+    var map = document.getElementById('map');
+
+    map.addEventListener('movemap', _this.moveIndicator.bind(_this));
+
   },
 
   handleClick: function(elem) {
@@ -688,12 +716,14 @@ Site.Minimap = {
     var y = row * Site.Map.window.height * -1;
 
     // Move map to new coordinates
-    // moveIndicator is called by this function
     Site.Map.moveMap(x,y);
   },
 
-  moveIndicator: function(x,y) {
+  moveIndicator: function(event) {
     var _this = this;
+
+    var x = event.detail.map.position.x;
+    var y = event.detail.map.position.y;
 
     // Multiply map position by minimap scale.
     // Map moves to negative coordinates,
