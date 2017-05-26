@@ -12,11 +12,9 @@ $fade-duration = .3s
   width: 100vw
   padding: $margin-basic
   z-index: 200
-  font-family: 'Calibre-Bold', font-stack('Helvetica')
-  font-weight: 700
 
 #header-name
-  height: $margin-mid
+  height: 1rem
 
 #header-menu
   display: none
@@ -37,8 +35,15 @@ $fade-duration = .3s
   &:after
     height: 2.8rem
 
+#main-content
+  padding-top: 'calc(1rem + %s)' % ($margin-basic)
+  padding-bottom: $margin-basic
+
 .page-content
   padding: $margin-basic
+
+.mobile-visual
+  padding: 0 $margin-basic
 
 // ******************************************************
 
