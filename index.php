@@ -20,7 +20,7 @@ $args = array(
 );
 
 $query = new WP_Query( $args );
-$i = 0;
+$grid_index = 0;
 
 if ( $query->have_posts() ) {
   while ( $query->have_posts() ) {
@@ -37,16 +37,16 @@ if ( $query->have_posts() ) {
 
 <?php
   if ($grid_group) {
-    if ($i < $grid_group_length) {
+    if ($grid_index < $grid_group_length) {
 ?>
         <div class="mobile-visual mobile-only">
-          <?php render_grid_unit_visuals($grid_group[$i]); ?>
+          <?php render_grid_unit_visuals($grid_group[$grid_index]); ?>
         </div>
 <?php
     }
   }
 
-  $i++;
+  $grid_index++;
   }
 }
 
