@@ -5,6 +5,13 @@ get_header();
   <div id="main-content">
 
 <?php
+$grid_group = IGV_get_option('_igv_image_options','_igv_map_grid_group');
+
+if ($grid_group) {
+  $grid_group = prepare_grid_data_array($grid_group);
+  $grid_group_length = count($grid_group);
+}
+
 $args = array(
   'post_type'      => array( 'page' ),
   'posts_per_page' => '-1',
@@ -13,6 +20,7 @@ $args = array(
 );
 
 $query = new WP_Query( $args );
+$grid_index = 0;
 
 if ( $query->have_posts() ) {
   while ( $query->have_posts() ) {
@@ -21,11 +29,24 @@ if ( $query->have_posts() ) {
 
         <article <?php post_class('page-content'); ?> id="post-<?php the_ID(); ?>" data-slug="<?php echo $post->post_name; ?>">
 
+          <h3 class="font-calibre-bold margin-bottom-small mobile-only"><?php the_title(); ?></h3>
+
           <?php the_content(); ?>
 
         </article>
 
 <?php
+  if ($grid_group) {
+    if ($grid_index < $grid_group_length) {
+?>
+        <div class="mobile-visual mobile-only">
+          <?php render_grid_unit_visuals($grid_group[$grid_index]); ?>
+        </div>
+<?php
+    }
+  }
+
+  $grid_index++;
   }
 }
 

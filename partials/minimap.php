@@ -1,4 +1,4 @@
-<div id="minimap">
+<div id="minimap" class="desktop-only">
   <div class="minimap-row grid-row">
     <div class="minimap-button" data-row="0" data-col="0">
       <span>&bull;</span>

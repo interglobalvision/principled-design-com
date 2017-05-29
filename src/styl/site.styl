@@ -98,17 +98,18 @@ html
   background-color: $color-white
   color: $color-black
 
-img
+img, video
   max-width: 100%
   height: auto
-
-.mobile-only
-  display: initial !important
 
 .desktop-only
   display: none !important
 
 // ******************************************************
+
+.font-calibre-bold
+  font-family: 'Calibre-Bold', font-stack('Helvetica')
+  font-weight: 700
 
 // MEDIA QUERIES
 
@@ -150,9 +151,6 @@ font-sizes($font-size-basic)
 
   font-sizes($font-size-basic)
 
-  .mobile-only
-    display: none !important
-
   @import 'responsive/tablet-portrait'
 
 @media screen and (min-width: 1024px)
@@ -173,6 +171,9 @@ font-sizes($font-size-basic)
   space-maker($margin-micro, $margin-tiny, $margin-small, $margin-basic, $margin-mid, $margin-large)
 
   font-sizes($font-size-basic)
+
+  .mobile-only
+    display: none !important
 
   .desktop-only
     display: initial !important

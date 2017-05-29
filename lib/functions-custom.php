@@ -36,35 +36,45 @@ function get_client_ip() {
   return apply_filters( 'wpb_get_ip', $ip );
 }
 
+function prepare_grid_data_array($array) {
+
+    shuffle($array);
+
+    return array_slice($array, 0, 9);
+
+}
+
 function make_map_grid_unit($item) {
 ?>
 <div class="map-block">
   <div class="map-block-content">
-    <?php
-      if (!empty($item['image_id'])) {
-        if (!empty($item['mp4']) && !empty($item['webm'])) {
-          // show the video
-          $poster = wp_get_attachment_image_src($item['image_id'], 'map');
-    ?>
-    <video autoplay muted loop poster="<?php echo $poster[0]; ?>">
-      <source src="<?php echo $item['mp4']; ?>" type="video/mp4" />
-      <source src="<?php echo $item['webm']; ?>" type="video/webm" />
-    <?php
-          if (!empty($item['ovg'])) {
-    ?>
-      <source src="<?php echo $item['ovg']; ?>" type="video/ogv" />
-    <?php
-          }
-    ?>
-    </video>
-    <?php
-        } else {
-          // just show the image
-          echo wp_get_attachment_image($item['image_id'], 'map');
-        }
-      }
-    ?>
+    <?php render_grid_unit_visuals($item); ?>
   </div>
 </div>
 <?php
+}
+
+function render_grid_unit_visuals($item) {
+  if (!empty($item['image_id'])) {
+      if (!empty($item['mp4']) && !empty($item['webm'])) {
+        // show the video
+        $poster = wp_get_attachment_image_src($item['image_id'], 'map');
+  ?>
+  <video autoplay muted loop poster="<?php echo $poster[0]; ?>">
+    <source src="<?php echo $item['mp4']; ?>" type="video/mp4" />
+    <source src="<?php echo $item['webm']; ?>" type="video/webm" />
+  <?php
+        if (!empty($item['ovg'])) {
+  ?>
+    <source src="<?php echo $item['ovg']; ?>" type="video/ogv" />
+  <?php
+        }
+  ?>
+  </video>
+  <?php
+      } else {
+        // just show the image
+        echo wp_get_attachment_image($item['image_id'], 'map');
+      }
+    }
 }
