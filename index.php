@@ -23,6 +23,10 @@ $query = new WP_Query( $args );
 $grid_index = 0;
 
 if ( $query->have_posts() ) {
+
+  $post_count = $query->post_count;
+  $post_index = 0;
+
   while ( $query->have_posts() ) {
     $query->the_post();
 ?>
@@ -36,8 +40,10 @@ if ( $query->have_posts() ) {
         </article>
 
 <?php
+  $post_index++;
+
   if ($grid_group) {
-    if ($grid_index < $grid_group_length) {
+    if ($grid_index < $grid_group_length && $post_index < $post_count) {
 ?>
         <div class="mobile-visual mobile-only">
           <?php render_grid_unit_visuals($grid_group[$grid_index]); ?>

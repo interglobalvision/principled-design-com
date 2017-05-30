@@ -25,12 +25,6 @@ $fields = array(
     'id'      => 'webm',
     'type'    => 'file',
   ),
-  array(
-    'name'    => __( 'OGV Video', 'IGV' ),
-    'desc'    => __( 'if displaying as a video (optional)', 'IGV' ),
-    'id'      => 'ogv',
-    'type'    => 'file',
-  ),
 );
 
 $metabox = array(
