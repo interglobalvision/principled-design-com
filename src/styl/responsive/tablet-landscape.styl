@@ -14,11 +14,13 @@ $menu-width = 295px
 #header-menu
   display: initial
 
+$menu-width-padded = $menu-width + ($margin-basic * 2)
+
 $main-content-offset = $margin-basic + $margin-mid
 
 #main-content-container
-  width: 'calc(100vw - %s)' % ($menu-width + $margin-basic)
-  left: $menu-width
+  width: 'calc(100vw - %s)' % $menu-width-padded
+  left: $menu-width-padded
   padding-top: $main-content-offset
   position: fixed
   height: 100vh
@@ -29,6 +31,7 @@ $main-content-offset = $margin-basic + $margin-mid
 #main-content
   width: 410px
   transition: opacity $fade-duration
+  padding-top: 0
 
 .page-content
   display: none
