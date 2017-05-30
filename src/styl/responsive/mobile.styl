@@ -99,7 +99,15 @@ $fade-duration = .3s
   bottom: $margin-small
   left: $margin-small
   z-index: 300
+
+#minimap-border
+  position: absolute
+  top: 0
+  left: 0
+  width: 9vw
+  height: 9vh
   border: 2px solid $color-black
+  pointer-events: none
 
 .minimap-row
   display: flex
@@ -114,6 +122,8 @@ $fade-duration = .3s
   align-items: center
   font-size: 10px
   cursor: pointer
+  span
+    padding-top: 2px
 
 #minimap-indicator
   width: 3vw

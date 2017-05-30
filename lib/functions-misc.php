@@ -55,3 +55,12 @@ function custom_login_logo() {
 }
 add_action( 'login_head', 'custom_login_logo' );
 */
+
+// Custom configuration for TinyMCE
+function configure_tiny_mce( $mceInit ) {
+  // Add &emsp; to Tiny MCE entities array
+  $mceInit['entities'] .= ',8195,emsp';
+  $mceInit['entity_encoding'] = 'named';
+  return $mceInit;
+}
+add_filter('tiny_mce_before_init', 'configure_tiny_mce');

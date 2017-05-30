@@ -63,13 +63,6 @@ function render_grid_unit_visuals($item) {
   <video autoplay muted loop poster="<?php echo $poster[0]; ?>">
     <source src="<?php echo $item['mp4']; ?>" type="video/mp4" />
     <source src="<?php echo $item['webm']; ?>" type="video/webm" />
-  <?php
-        if (!empty($item['ovg'])) {
-  ?>
-    <source src="<?php echo $item['ovg']; ?>" type="video/ogv" />
-  <?php
-        }
-  ?>
   </video>
   <?php
       } else {
