@@ -45,3 +45,12 @@ function add_lazysize_on_srcset($attr) {
 
 }
 add_filter('wp_get_attachment_image_attributes', 'add_lazysize_on_srcset');
+
+// Allow for OGV file type uploads
+add_filter( 'upload_mimes', 'allowed_filetypes', 1, 1 );
+function allowed_filetypes($mime_types) {
+  $mime_types['ogv'] = 'video/ogg';     // Adding .svg extension
+
+  return $mime_types;
+
+}
