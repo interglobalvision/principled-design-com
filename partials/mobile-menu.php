@@ -15,7 +15,7 @@ if ( $query->have_posts() ) {
   while ( $query->have_posts() ) {
     $query->the_post();
 ?>
-      <li class="mobile-menu-item" data-slug="<?php echo $post->post_name; ?>"><?php the_title(); ?></li>
+      <li class="mobile-menu-item u-pointer" data-slug="<?php echo $post->post_name; ?>"><?php the_title(); ?></li>
 <?php
   }
 ?>
