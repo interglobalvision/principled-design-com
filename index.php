@@ -2,9 +2,10 @@
 get_header();
 ?>
 <main id="main-content-container">
-  <div id="main-content">
-
+  <div id="main-content" class="mobile-menu-active">
 <?php
+  get_template_part('partials/mobile-menu');
+
 $grid_group = IGV_get_option('_igv_image_options','_igv_map_grid_group');
 
 if ($grid_group) {
