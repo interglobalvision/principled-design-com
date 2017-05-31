@@ -243,6 +243,9 @@ Site.Map = {
     // Set map element
     _this.map = document.getElementById('map');
 
+    // Set jQuery element
+    _this.$map = $('#map');
+
     // Move map to match geolocation
     _this.geolocation();
 
@@ -485,6 +488,9 @@ Site.Map = {
       var newX = (translatedLongitude * (_this.window.width * -2)) / 360;
       var newY = (translatedLatitude * (_this.window.height * 2)) / 180;
 
+      // Trigger slow pan mode
+      _this.triggerSlowPan();
+
       // Move the map
       _this.moveMap(newX,newY);
     }
@@ -548,6 +554,18 @@ Site.Map = {
 
     // Dispatch movemapEvent
     _this.map.dispatchEvent(movemapEvent);
+  },
+
+  triggerSlowPan: function() {
+    var _this = this;
+
+    // Add slow pan class
+    _this.$map.addClass('slow-pan');
+
+    // Set timeout to remove slow-pan class
+    setTimeout( function() {
+      _this.$map.removeClass('slow-pan');
+    }, 300);
   },
 
   // Return distance between center and mouse positon in pixels
@@ -728,16 +746,8 @@ Site.Minimap = {
     var x = col * Site.Map.window.width * -1;
     var y = row * Site.Map.window.height * -1;
 
-    var $map = $('#map');
-
-    // Add slow pan class
-    $map.addClass('slow-pan');
-
-    // Set timeout to remove slow-pan class
-    setTimeout( function() {
-      $map.removeClass('slow-pan');
-    }, 300);
-
+    // Trigger slow pan mode
+    Site.Map.triggerSlowPan();
 
     // Move map to new coordinates
     Site.Map.moveMap(x,y);
