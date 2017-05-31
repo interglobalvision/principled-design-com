@@ -728,6 +728,17 @@ Site.Minimap = {
     var x = col * Site.Map.window.width * -1;
     var y = row * Site.Map.window.height * -1;
 
+    var $map = $('#map');
+
+    // Add slow pan class
+    $map.addClass('slow-pan');
+
+    // Set timeout to remove slow-pan class
+    setTimeout( function() {
+      $map.removeClass('slow-pan');
+    }, 300);
+
+
     // Move map to new coordinates
     Site.Map.moveMap(x,y);
 
