@@ -175,7 +175,7 @@ Site.Shapes = {
   patternMax: 4,
   currentPattern: 0,
   timer: null,
-  interval: 1000,
+  interval: 750,
   animating: false,
 
   init: function() {
