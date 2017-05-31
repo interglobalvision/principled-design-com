@@ -243,6 +243,9 @@ Site.Map = {
     // Set map element
     _this.map = document.getElementById('map');
 
+    // Set jQuery map element
+    _this.$map = $('#map');
+
     // Move map to match geolocation
     _this.geolocation();
 
@@ -486,14 +489,24 @@ Site.Map = {
       var newY = (translatedLatitude * (_this.window.height * 2)) / 180;
 
       // Move the map
-      _this.moveMap(newX,newY);
+      _this.moveMap(newX, newY, true);
     }
   },
 
 
   // Move the map to given coordinates
-  moveMap: function(x,y) {
+  moveMap: function(x, y, slowPan = false) {
     var _this =  this;
+
+    if (slowPan) {
+      // Add slow pan class
+      _this.$map.addClass('slow-pan');
+
+      // Set timeout to remove slow-pan class
+      setTimeout( function() {
+        _this.$map.removeClass('slow-pan');
+      }, 300);
+    }
 
     // Check for left limit
     if (x >= 0) {
@@ -728,19 +741,8 @@ Site.Minimap = {
     var x = col * Site.Map.window.width * -1;
     var y = row * Site.Map.window.height * -1;
 
-    var $map = $('#map');
-
-    // Add slow pan class
-    $map.addClass('slow-pan');
-
-    // Set timeout to remove slow-pan class
-    setTimeout( function() {
-      $map.removeClass('slow-pan');
-    }, 300);
-
-
     // Move map to new coordinates
-    Site.Map.moveMap(x,y);
+    Site.Map.moveMap(x, y, true);
 
   },
 
