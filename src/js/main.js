@@ -2,6 +2,7 @@
 /* global $, jQuery, document, Site, Modernizr, WP */
 
 Site = {
+  $window: $(window),
   mobileThreshold: 1024,
   scrollSpeed: 300,
   init: function() {
@@ -11,7 +12,7 @@ Site = {
 
     Site.Router.init();
 
-    $(window).resize(function(){
+    _this.$window.resize(function(){
       _this.onResize();
       Site.Nav.onResize();
     });
@@ -38,7 +39,7 @@ Site = {
   setIsMobileWidth: function() {
     var _this = this;
 
-    if ($(window).width() >= _this.mobileThreshold) {
+    if (_this.$window.width() >= _this.mobileThreshold) {
       _this.isMobileWidth = false;
     } else {
       _this.isMobileWidth = true;
@@ -120,7 +121,7 @@ Site.Router = {
   bind: function() {
     var _this = this;
 
-    $(window).on('hashchange', function() {
+    Site.$window.on('hashchange', function() {
       _this.loadRoute(_this.parseHash(location.hash));
     });
 
