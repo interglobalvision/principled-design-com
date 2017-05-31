@@ -38,6 +38,14 @@ $fade-duration = .3s
 #main-content
   padding-top: 'calc(1rem + %s)' % ($margin-basic)
   padding-bottom: $margin-basic
+  &.mobile-menu-active
+    .page-content, .mobile-visual
+      display: none
+    #mobile-menu
+      display: block
+
+#mobile-menu
+  display: none
 
 .page-content
   padding: $margin-basic

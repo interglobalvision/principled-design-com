@@ -2,14 +2,19 @@
 /* global $, jQuery, document, Site, Modernizr, WP */
 
 Site = {
-  mobileThreshold: 601,
+  $window: $(window),
+  mobileThreshold: 1024,
+  scrollSpeed: 300,
   init: function() {
     var _this = this;
 
+    _this.setIsMobileWidth();
+
     Site.Router.init();
 
-    $(window).resize(function(){
+    _this.$window.resize(function(){
       _this.onResize();
+      Site.Nav.onResize();
     });
 
     $(document).ready(function () {
@@ -26,8 +31,19 @@ Site = {
   onResize: function() {
     var _this = this;
 
-    Site.Map.onResize();
+    _this.setIsMobileWidth();
 
+    Site.Map.onResize();
+  },
+
+  setIsMobileWidth: function() {
+    var _this = this;
+
+    if (_this.$window.width() >= _this.mobileThreshold) {
+      _this.isMobileWidth = false;
+    } else {
+      _this.isMobileWidth = true;
+    }
   },
 
   fixWidows: function() {
@@ -42,15 +58,46 @@ Site = {
 
 Site.Nav = {
   init: function() {
-    this.bind();
+    var _this = this;
+
+    _this.$header = $('#header');
+
+    _this.setScrollOffset();
+
+    _this.bind();
   },
 
   bind: function() {
     var _this = this;
 
     $('#header-name').on('click', function() {
-      _this.reset();
+      if (Site.isMobileWidth) {
+        $('#main-content').toggleClass('mobile-menu-active');
+      } else {
+        _this.reset();
+      }
     });
+
+    $('.mobile-menu-item').on('click', function() {
+      var target = $(this).data('slug');
+      var $target = $('.page-content[data-slug=' + target + ']');
+
+      $('#main-content').removeClass('mobile-menu-active');
+
+      $('body').stop().animate({scrollTop: ($target.offset().top - _this.scrollOffset)}, Site.scrollSpeed, 'swing');
+    });
+  },
+
+  onResize: function() {
+    var _this = this;
+
+    _this.setScrollOffset();
+  },
+
+  setScrollOffset: function() {
+    var _this = this;
+
+    _this.scrollOffset = ((_this.$header.outerHeight() - _this.$header.height()) / 2) + _this.$header.height();
   },
 
   reset: function() {
@@ -74,7 +121,7 @@ Site.Router = {
   bind: function() {
     var _this = this;
 
-    $(window).on('hashchange', function() {
+    Site.$window.on('hashchange', function() {
       _this.loadRoute(_this.parseHash(location.hash));
     });
 
