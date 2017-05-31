@@ -34,10 +34,19 @@ $main-content-offset = $margin-basic + $margin-mid
   padding-top: 0
 
 .page-content
+  display: none
   padding: 0
 
-.page-content-active
-  display: block
+#main-content
+  #mobile-menu
+    display: none
+  .page-content-active
+    display: block
+  &.mobile-menu-active
+    #mobile-menu
+      display: none
+    .page-content-active
+      display: block
 
 // ******************************************************
 
