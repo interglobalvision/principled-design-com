@@ -668,7 +668,7 @@ Site.Map = {
 };
 
 Site.Fades = {
-  $textContent: $('#main-content'),
+  $textContent: $('#header-name, #header-menu li, #main-content'),
   $mapContent: $('.map-block-content'),
   isPanning: false,
   isHoveringText: false,
