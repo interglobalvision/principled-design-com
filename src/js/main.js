@@ -2,11 +2,17 @@
 /* global $, jQuery, document, Site, Modernizr, WP */
 
 Site = {
-  $window: $(window),
   mobileThreshold: 1024,
   scrollSpeed: 300,
   init: function() {
     var _this = this;
+
+    _this.mapElement = document.getElementById('map');
+
+    _this.$window = $(window);
+
+    // Set windowSize
+    _this.getWindowSize();
 
     _this.setIsMobileWidth();
 
@@ -28,8 +34,28 @@ Site = {
 
   },
 
+  getWindowSize: function() {
+    var _this =  this;
+
+    // Save window size
+    _this.window = {
+      width: window.innerWidth,
+      height: window.innerHeight,
+    };
+
+    // Save window center
+    _this.window.center = {
+      x: _this.window.width / 2,
+      y: _this.window.height / 2,
+    };
+
+  },
+
   onResize: function() {
     var _this = this;
+
+    // Set windowSize
+    _this.getWindowSize();
 
     _this.setIsMobileWidth();
 
@@ -39,7 +65,7 @@ Site = {
   setIsMobileWidth: function() {
     var _this = this;
 
-    if (_this.$window.width() >= _this.mobileThreshold) {
+    if (_this.window.width >= _this.mobileThreshold) {
       _this.isMobileWidth = false;
     } else {
       _this.isMobileWidth = true;
@@ -101,7 +127,7 @@ Site.Nav = {
   },
 
   reset: function() {
-    Site.Map.moveMap(Site.Map.window.width * -1, Site.Map.window.height * -1);
+    Site.Map.moveMap(Site.window.width * -1, Site.window.height * -1);
     Site.Router.resetContent();
     Site.Router.cleanUrl();
   },
@@ -183,13 +209,11 @@ Site.Shapes = {
 
     _this.showPattern();
 
-    var map = document.getElementById('map');
-
-    map.addEventListener('startpan', function() {
+    Site.mapElement.addEventListener('startpan', function() {
       _this.startAnimation();
     });
 
-    map.addEventListener('stoppan', function() {
+    Site.mapElement.addEventListener('stoppan', function() {
       _this.stopAnimation();
     });
 
@@ -284,12 +308,6 @@ Site.Map = {
   init: function() {
     var _this =  this;
 
-    // Set windowSize
-    _this.getWindowSize();
-
-    // Set map element
-    _this.map = document.getElementById('map');
-
     // Move map to match geolocation
     _this.geolocation();
 
@@ -310,29 +328,10 @@ Site.Map = {
   onResize: function() {
     var _this =  this;
 
-    // Set windowSize
-    _this.getWindowSize();
-
-    // init pan zones
+    // re init pan zones
     _this.setPanZones();
   },
 
-  getWindowSize: function() {
-    var _this =  this;
-
-    // Save window size
-    _this.window = {
-      width: window.innerWidth,
-      height: window.innerHeight,
-    };
-
-    // Save window center
-    _this.window.center = {
-      x: _this.window.width / 2,
-      y: _this.window.height / 2,
-    };
-
-  },
 
   // Set Up, Left, Down and Right pan zones based on window size
   setPanZones: function() {
@@ -344,16 +343,16 @@ Site.Map = {
         max: _this.panZoneSize,
       },
       down: {
-        min: _this.window.height - _this.panZoneSize,
-        max: _this.window.height,
+        min: Site.window.height - _this.panZoneSize,
+        max: Site.window.height,
       },
       left: {
         min: 0,
         max: _this.panZoneSize,
       },
       right: {
-        min: _this.window.width - _this.panZoneSize,
-        max: _this.window.width,
+        min: Site.window.width - _this.panZoneSize,
+        max: Site.window.width,
       },
     };
 
@@ -440,7 +439,7 @@ Site.Map = {
       },
     });
 
-    _this.map.dispatchEvent(startPanEvent);
+    Site.mapElement.dispatchEvent(startPanEvent);
 
   },
 
@@ -458,7 +457,7 @@ Site.Map = {
       },
     });
 
-    _this.map.dispatchEvent(stopPanEvent);
+    Site.mapElement.dispatchEvent(stopPanEvent);
 
   },
 
@@ -479,7 +478,7 @@ Site.Map = {
 
     // If we don't know the map's current postion we get it
     if (!_this.mapPosition) {
-      _this.mapPosition = _this.getElemPosition(_this.map);
+      _this.mapPosition = _this.getElemPosition(Site.mapElement);
     }
 
     // Get new coordinates based on the angle and the translation value
@@ -529,8 +528,8 @@ Site.Map = {
       var translatedLatitude = latitude - 90;
 
       // Magic math, jk. It'ssic math.
-      var newX = (translatedLongitude * (_this.window.width * -2)) / 360;
-      var newY = (translatedLatitude * (_this.window.height * 2)) / 180;
+      var newX = (translatedLongitude * (Site.window.width * -2)) / 360;
+      var newY = (translatedLatitude * (Site.window.height * 2)) / 180;
 
       // Move the map
       _this.moveMap(newX,newY);
@@ -548,8 +547,8 @@ Site.Map = {
     }
 
     // Check for right limit
-    if (x <= _this.window.width * -2) {
-      x = _this.window.width * -2;
+    if (x <= Site.window.width * -2) {
+      x = Site.window.width * -2;
     }
 
     // Check for upper limit
@@ -558,14 +557,13 @@ Site.Map = {
     }
 
     // Check for bottom limit
-    if (y <= _this.window.height * -2) {
-      y = _this.window.height * -2;
+    if (y <= Site.window.height * -2) {
+      y = Site.window.height * -2;
     }
-
 
     // If we don't know the map's current postion we get it
     if (!_this.mapPosition) {
-      _this.mapPosition = _this.getElemPosition(_this.map);
+      _this.mapPosition = _this.getElemPosition(Site.mapElement);
     }
 
     // Set new coordinates
@@ -573,9 +571,10 @@ Site.Map = {
     _this.mapPosition[5] = y;
 
     // Apply new coordinates
-    _this.map.style.transform = 'matrix(' + _this.mapPosition.toString() + ')';
+    Site.mapElement.style.transform = 'matrix(' + _this.mapPosition.toString() + ')';
 
     _this.triggerMoveEvent(x,y);
+
   },
 
   triggerMoveEvent: function(x,y) {
@@ -594,15 +593,15 @@ Site.Map = {
     });
 
     // Dispatch movemapEvent
-    _this.map.dispatchEvent(movemapEvent);
+    Site.mapElement.dispatchEvent(movemapEvent);
   },
 
   // Return distance between center and mouse positon in pixels
   distanceFromCenter: function() {
     var _this = this;
 
-    var xs = Math.pow(_this.window.center.x - _this.mouse.x, 2);
-    var ys = Math.pow(_this.window.center.y - _this.mouse.y, 2);
+    var xs = Math.pow(Site.window.center.x - _this.mouse.x, 2);
+    var ys = Math.pow(Site.window.center.y - _this.mouse.y, 2);
     var distance = Math.sqrt(xs + ys);
 
     return distance;
@@ -612,8 +611,8 @@ Site.Map = {
   angleFromCenter: function() {
     var _this = this;
 
-    var dy = _this.window.center.y - this.mouse.y;
-    var dx = _this.window.center.x - this.mouse.x;
+    var dy = Site.window.center.y - this.mouse.y;
+    var dx = Site.window.center.x - this.mouse.x;
 
     var theta = Math.atan2(dy, dx); // range (-PI, PI]
 
@@ -682,9 +681,7 @@ Site.Fades = {
   handleMapPanning: function() {
     var _this = this;
 
-    var map = document.getElementById('map');
-
-    map.addEventListener('startpan', function() {
+    Site.mapElement.addEventListener('startpan', function() {
       _this.isPanning = true;
 
       // Fadeout text content
@@ -694,7 +691,7 @@ Site.Fades = {
       _this.$mapContent.removeClass('fade-element');
     });
 
-    map.addEventListener('stoppan', function() {
+    Site.mapElement.addEventListener('stoppan', function() {
       _this.isPanning = false;
 
       // Fadein text content
@@ -758,9 +755,7 @@ Site.Minimap = {
   bindMapMove: function() {
     var _this = this;
 
-    var map = document.getElementById('map');
-
-    map.addEventListener('movemap', _this.moveIndicator.bind(_this));
+    Site.mapElement.addEventListener('movemap', _this.moveIndicator.bind(_this));
 
   },
 
@@ -772,8 +767,8 @@ Site.Minimap = {
     var row = $(elem).attr('data-row');
 
     // Multiply positions by window sizes to get new map coordinates
-    var x = col * Site.Map.window.width * -1;
-    var y = row * Site.Map.window.height * -1;
+    var x = col * Site.window.width * -1;
+    var y = row * Site.window.height * -1;
 
     var $map = $('#map');
 
@@ -833,10 +828,7 @@ Site.Coordinates = {
   bindMapMove: function() {
     var _this = this;
 
-    // Bind to mapmove
-    var map = document.getElementById('map');
-
-    map.addEventListener('movemap', _this.updateCoordinates.bind(_this));
+    Site.mapElement.addEventListener('movemap', _this.updateCoordinates.bind(_this));
   },
 
   updateCoordinates: function(event) {
@@ -858,8 +850,8 @@ Site.Coordinates = {
     var _this = this;
 
     // Get window size
-    var windowWidth = Site.Map.window.width;
-    var windowHeight = Site.Map.window.height;
+    var windowWidth = Site.window.width;
+    var windowHeight = Site.window.height;
 
     // Transport values to scales of (-180 - 180) for longitude and of (-90 - 90) for latitude
     var long = ((x / (windowWidth * -2)) * 360) - 180;
