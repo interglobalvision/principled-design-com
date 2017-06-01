@@ -203,19 +203,37 @@ Site.Shapes = {
   timer: null,
   interval: 500,
   animating: false,
+  atLimit: false, // is the map at a limit?
 
   init: function() {
     var _this = this;
 
     _this.showPattern();
 
-    Site.mapElement.addEventListener('startpan', function() {
-      _this.startAnimation();
-    });
+    Site.mapElement.addEventListener('startpan', _this.startAnimation.bind(_this));
 
-    Site.mapElement.addEventListener('stoppan', function() {
-      _this.stopAnimation();
-    });
+    Site.mapElement.addEventListener('stoppan', _this.stopAnimation.bind(_this));
+
+    Site.mapElement.addEventListener('movemap', _this.checkMapPosition.bind(_this));
+
+  },
+
+  // Check if the map position is at a limit
+  checkMapPosition: function(event) {
+    var _this = this;
+
+    var x = event.detail.map.position.x;
+    var y = event.detail.map.position.y;
+
+    // Check for left limit
+    if (x >= 0 ||
+      x <= Site.window.width * -2 || // Check for right limit
+      y >= 0 || // Check for upper limit
+      y <= Site.window.height * -2) { // Check for bottom limit
+      _this.atLimit = true;
+    } else {
+      _this.atLimit = false;
+    }
 
   },
 
@@ -251,8 +269,8 @@ Site.Shapes = {
   playAnimation: function() {
     var _this = this;
 
-    // Check is animating has been stopped; we do this here to fail faster
-    if (!_this.animating) {
+    // Check is animating has been stopped or is at limit; we do this here to fail faster
+    if (!_this.animating || _this.atLimit) {
       return false;
     }
 
@@ -273,13 +291,16 @@ Site.Shapes = {
     _this.timer = window.requestAnimationFrame(_this.playAnimation.bind(_this));
   },
 
-  startAnimation: function() {
+  startAnimation: function(event) {
     var _this = this;
 
     // Set initial start time
     _this.startTime = new Date().getTime() - _this.interval;
 
     _this.animating = true;
+
+    // TODO: REMOVE LATER
+    // _this.checkMapPosition(event);
 
     // Initialize animation loop
     _this.playAnimation();
@@ -289,6 +310,8 @@ Site.Shapes = {
     var _this = this;
 
     _this.animating = false;
+
+    _this.atLimit = false;
 
     // Clear animation request
     window.cancelAnimationFrame(_this.timer);
@@ -421,6 +444,14 @@ Site.Map = {
     _this.delayTimeout = setTimeout( function() {
       _this.startPanEvent();
       window.requestAnimationFrame(_this.pan.bind(_this));
+
+      /* TODO: REMOVE LATER
+      window.requestAnimationFrame( function() {
+        _this.startPanEvent();
+        _this.pan();
+      });
+    */
+
     }, _this.panDelay);
 
   },
