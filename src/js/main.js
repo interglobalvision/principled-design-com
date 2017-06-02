@@ -627,6 +627,11 @@ Site.Map = {
     // Get current element position (transform values)
     var transformMatrix = getComputedStyle(elem).transform; // Returns a string like "matrix(0,0,0,0,0,0)"
 
+    // If no transform styles applied yet, return the default array values
+    if(transform = 'none') {
+      return [1,0,0,1,0,0];
+    }
+
     // Get only the values as an array
     transformMatrix = transformMatrix.replace(/3d|matrix|\(|\)|\s|/g,'').split(','); // Returns an array like ["0","0","0","0","0","0"]
 
