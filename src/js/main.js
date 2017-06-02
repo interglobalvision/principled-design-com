@@ -203,7 +203,7 @@ Site.Shapes = {
   timer: null,
   interval: 500,
   animating: false,
-  atCorner: false, // is the map at a limit?
+  atCorner: false, // is the map at a corner?
 
   init: function() {
     var _this = this;
@@ -218,7 +218,7 @@ Site.Shapes = {
 
   },
 
-  // Check if the map position is at a limit
+  // Check if the map position is at a corner
   checkMapPosition: function(event) {
     var _this = this;
 
@@ -232,24 +232,27 @@ Site.Shapes = {
       reachedLimits++;
     }
 
-    if (x <= Site.window.width * -2) { // Check for right limit
+    // Check for right limit
+    if (x <= Site.window.width * -2) {
       reachedLimits++;
     }
 
-    if (y >= 0) {// Check for upper limit
+    // Check for upper limit
+    if (y >= 0) {
       reachedLimits++;
     }
 
-    if (y <= Site.window.height * -2) { // Check for bottom limit
+    // Check for bottom limit
+    if (y <= Site.window.height * -2) {
       reachedLimits++;
     }
 
+    // Reaching 2 limits means we are at a corner
     if(reachedLimits >= 2) {
       _this.atCorner = true;
     } else {
       _this.atCorner = false;
     }
-
 
   },
 
@@ -293,7 +296,7 @@ Site.Shapes = {
     var currentTime = new Date().getTime();
     var delta = currentTime - _this.startTime;
 
-    // If interval has passed since start time
+    // If interval has passed since start time and we are not in a corner
     if (delta >= _this.interval  && !_this.atCorner) {
 
       // Change the background pattern
