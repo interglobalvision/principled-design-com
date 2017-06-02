@@ -203,7 +203,7 @@ Site.Shapes = {
   timer: null,
   interval: 500,
   animating: false,
-  atLimit: false, // is the map at a limit?
+  atCorner: false, // is the map at a limit?
 
   init: function() {
     var _this = this;
@@ -225,15 +225,31 @@ Site.Shapes = {
     var x = event.detail.map.position.x;
     var y = event.detail.map.position.y;
 
+    var reachedLimits = 0;
+
     // Check for left limit
-    if (x >= 0 ||
-      x <= Site.window.width * -2 || // Check for right limit
-      y >= 0 || // Check for upper limit
-      y <= Site.window.height * -2) { // Check for bottom limit
-      _this.atLimit = true;
-    } else {
-      _this.atLimit = false;
+    if (x >= 0) {
+      reachedLimits++;
     }
+
+    if (x <= Site.window.width * -2) { // Check for right limit
+      reachedLimits++;
+    }
+
+    if (y >= 0) {// Check for upper limit
+      reachedLimits++;
+    }
+
+    if (y <= Site.window.height * -2) { // Check for bottom limit
+      reachedLimits++;
+    }
+
+    if(reachedLimits >= 2) {
+      _this.atCorner = true;
+    } else {
+      _this.atCorner = false;
+    }
+
 
   },
 
@@ -270,7 +286,7 @@ Site.Shapes = {
     var _this = this;
 
     // Check is animating has been stopped or is at limit; we do this here to fail faster
-    if (!_this.animating || _this.atLimit) {
+    if (!_this.animating) {
       return false;
     }
 
@@ -278,7 +294,7 @@ Site.Shapes = {
     var delta = currentTime - _this.startTime;
 
     // If interval has passed since start time
-    if (delta >= _this.interval) {
+    if (delta >= _this.interval  && !_this.atCorner) {
 
       // Change the background pattern
       _this.changePattern();
@@ -299,9 +315,6 @@ Site.Shapes = {
 
     _this.animating = true;
 
-    // TODO: REMOVE LATER
-    // _this.checkMapPosition(event);
-
     // Initialize animation loop
     _this.playAnimation();
   },
@@ -311,7 +324,7 @@ Site.Shapes = {
 
     _this.animating = false;
 
-    _this.atLimit = false;
+    _this.atCorner = false;
 
     // Clear animation request
     window.cancelAnimationFrame(_this.timer);
@@ -444,13 +457,6 @@ Site.Map = {
     _this.delayTimeout = setTimeout( function() {
       _this.startPanEvent();
       window.requestAnimationFrame(_this.pan.bind(_this));
-
-      /* TODO: REMOVE LATER
-      window.requestAnimationFrame( function() {
-        _this.startPanEvent();
-        _this.pan();
-      });
-    */
 
     }, _this.panDelay);
 
