@@ -726,6 +726,7 @@ Site.Fades = {
   init: function() {
     var _this = this;
 
+    // Fades are not used on mobile
     if (!Site.isMobileWidth) {
       _this.handleMapPanning();
       _this.handleTextHover();
@@ -978,9 +979,9 @@ Site.Orientation = {
   // Moves map with orientation change
   handleOrientation: function(event) {
 
+    // Get orientation values from the event
     var x = event.gamma; // In degree in the range [-90,90]
     var y = event.beta;  // In degree in the range [-180,180]
-
 
     // Magic math, jk. It's basic math.
     var newX = (x + 90) * (Site.window.width * -2) / 180;
