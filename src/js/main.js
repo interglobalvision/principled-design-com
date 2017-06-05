@@ -911,7 +911,7 @@ Site.Coordinates = {
 
     // Transport values to scales of (-180 - 180) for longitude and of (-90 - 90) for latitude
     var long = ((x / (windowWidth * -2)) * 360) - 180;
-    var lat = ((y / (windowHeight * -2)) * 180 ) - 90;
+    var lat = -1 * (((y / (windowHeight * -2)) * 180 ) - 90);
 
     // Convert values to DMS
     long = _this.convertToDMS(long);
