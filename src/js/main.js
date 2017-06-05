@@ -30,6 +30,7 @@ Site = {
       Site.Map.init();
       Site.Fades.init();
       Site.Nav.init();
+      Site.Orientation.init();
     });
 
   },
@@ -202,11 +203,17 @@ Site.Shapes = {
   currentPattern: 0,
   timer: null,
   interval: 500,
+  mobileInterval: 3000,
   animating: false,
   atCorner: false, // is the map at a corner?
 
   init: function() {
     var _this = this;
+
+    // If we are on mobile, we slow down the animation interval
+    if (Site.isMobileWidth) {
+      _this.interval = _this.mobileInterval;
+    }
 
     _this.showPattern();
 
@@ -248,7 +255,7 @@ Site.Shapes = {
     }
 
     // Reaching 2 limits means we are at a corner
-    if(reachedLimits >= 2) {
+    if (reachedLimits >= 2) {
       _this.atCorner = true;
     } else {
       _this.atCorner = false;
@@ -567,7 +574,7 @@ Site.Map = {
       // Transport latitude to only negative values so it goes from -180 to 0
       var translatedLatitude = latitude - 90;
 
-      // Magic math, jk. It'ssic math.
+      // Magic math, jk. It's basic math.
       var newX = (translatedLongitude * (Site.window.width * -2)) / 360;
       var newY = (translatedLatitude * (Site.window.height * 2)) / 180;
 
@@ -667,7 +674,7 @@ Site.Map = {
     var transformMatrix = getComputedStyle(elem).transform; // Returns a string like "matrix(0,0,0,0,0,0)"
 
     // If no transform styles applied yet, return the default array values
-    if(transform = 'none') {
+    if (transform = 'none') {
       return [1,0,0,1,0,0];
     }
 
@@ -719,8 +726,12 @@ Site.Fades = {
   init: function() {
     var _this = this;
 
-    _this.handleMapPanning();
-    _this.handleTextHover();
+    // Fades are not used on mobile
+    if (!Site.isMobileWidth) {
+      _this.handleMapPanning();
+      _this.handleTextHover();
+    }
+
   },
 
   handleMapPanning: function() {
@@ -936,6 +947,51 @@ Site.Coordinates = {
     return (d + '° ' + m + '\' ' + s + '"');
   }
 
+};
+
+// Handles Panning thru device orientation
+Site.Orientation = {
+  init: function() {
+    var _this = this;
+
+    // We only get this working if we are on mobile
+    if (Site.isMobileWidth) {
+
+      // Bind handle orintation function scope; a la react
+      _this.handleOrientation = _this.handleOrientation.bind(_this);
+
+      // Bind events
+      _this.bind();
+
+      // We need to trigger this event in order to get the patterns changing
+      Site.Map.startPanEvent();
+    }
+
+  },
+
+  bind: function() {
+    var _this = this;
+
+    // Listen for deviceorientation
+    window.addEventListener("deviceorientation", _this.handleOrientation, true);
+
+  },
+
+  // Moves map with orientation change
+  handleOrientation: function(event) {
+
+    // Get orientation values from the event
+    var x = event.gamma; // In degree in the range [-90,90]
+    var y = event.beta;  // In degree in the range [-180,180]
+
+    // Magic math, jk. It's basic math.
+    var newX = (x + 90) * (Site.window.width * -2) / 180;
+    var newY = (y + 180) * (Site.window.height * -2) / 360;
+
+    // Move the map
+    Site.Map.moveMap(newX,newY);
+
+  },
 };
 
 Site.init();
