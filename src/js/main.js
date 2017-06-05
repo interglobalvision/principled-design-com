@@ -30,6 +30,7 @@ Site = {
       Site.Map.init();
       Site.Fades.init();
       Site.Nav.init();
+      Site.Orientation.init();
     });
 
   },
@@ -567,7 +568,7 @@ Site.Map = {
       // Transport latitude to only negative values so it goes from -180 to 0
       var translatedLatitude = latitude - 90;
 
-      // Magic math, jk. It'ssic math.
+      // Magic math, jk. It's basic math.
       var newX = (translatedLongitude * (Site.window.width * -2)) / 360;
       var newY = (translatedLatitude * (Site.window.height * 2)) / 180;
 
@@ -936,6 +937,38 @@ Site.Coordinates = {
     return (d + '° ' + m + '\' ' + s + '"');
   }
 
+};
+
+Site.Orientation = {
+  init: function() {
+    var _this = this;
+
+    if (Site.isMobileWidth) {
+      _this.handleOrientation = _this.handleOrientation.bind(_this);
+
+      _this.bind();
+    }
+  },
+
+  bind: function() {
+    var _this = this;
+
+    window.addEventListener("deviceorientation", _this.handleOrientation, true);
+  },
+
+  handleOrientation: function(event) {
+
+    var x = event.gamma; // In degree in the range [-90,90]
+    var y = event.beta;  // In degree in the range [-180,180]
+
+
+    // Magic math, jk. It's basic math.
+    var newX = (x + 90) * (Site.window.width * -2) / 180;
+    var newY = (y + 180) * (Site.window.height * -2) / 360;
+
+    // Move the map
+    Site.Map.moveMap(newX,newY);
+  },
 };
 
 Site.init();
