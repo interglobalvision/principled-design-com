@@ -203,11 +203,17 @@ Site.Shapes = {
   currentPattern: 0,
   timer: null,
   interval: 500,
+  mobileInterval: 3000,
   animating: false,
   atCorner: false, // is the map at a corner?
 
   init: function() {
     var _this = this;
+
+    // If we are on mobile, we slow down the animation interval
+    if (Site.isMobileWidth) {
+      _this.interval = _this.mobileInterval;
+    }
 
     _this.showPattern();
 
@@ -720,8 +726,11 @@ Site.Fades = {
   init: function() {
     var _this = this;
 
-    _this.handleMapPanning();
-    _this.handleTextHover();
+    if (!Site.isMobileWidth) {
+      _this.handleMapPanning();
+      _this.handleTextHover();
+    }
+
   },
 
   handleMapPanning: function() {
@@ -939,23 +948,34 @@ Site.Coordinates = {
 
 };
 
+// Handles Panning thru device orientation
 Site.Orientation = {
   init: function() {
     var _this = this;
 
+    // We only get this working if we are on mobile
     if (Site.isMobileWidth) {
+
+      // Bind handle orintation function scope; a la react
       _this.handleOrientation = _this.handleOrientation.bind(_this);
 
+      // Bind events
       _this.bind();
+
+      // We need to trigger this event in order to get the patterns changing
+      Site.Map.startPanEvent();
     }
   },
 
   bind: function() {
     var _this = this;
 
+    // Listen for deviceorientation
     window.addEventListener("deviceorientation", _this.handleOrientation, true);
+
   },
 
+  // Moves map with orientation change
   handleOrientation: function(event) {
 
     var x = event.gamma; // In degree in the range [-90,90]
