@@ -894,11 +894,11 @@ Site.Coordinates = {
     var x = event.detail.map.position.x;
     var y = event.detail.map.position.y;
 
-    // Convert position to lat, long
+    // Convert position to lat, lon
     var coordinates = _this.convertToCoordinates(x,y);
 
     // Update coordintaes in the markup
-    _this.coordinatesHolder.innerHTML = coordinates.lat + ", " + coordinates.long;
+    _this.coordinatesHolder.innerHTML = coordinates.lat + ", " + coordinates.lon;
 
   },
 
@@ -910,17 +910,17 @@ Site.Coordinates = {
     var windowHeight = Site.window.height;
 
     // Transport values to scales of (-180 - 180) for longitude and of (-90 - 90) for latitude
-    var long = ((x / (windowWidth * -2)) * 360) - 180;
+    var lon = ((x / (windowWidth * -2)) * 360) - 180;
     var lat = ((y / (windowHeight * -2)) * 180 ) - 90;
 
     // Convert values to DMS
-    long = _this.convertToDMS(long);
+    lon = _this.convertToDMS(lon);
     lat = _this.convertToDMS(lat);
 
     // Make the coordinates object
     var convertedCoordinates = {
       lat: lat,
-      long: long,
+      lon: lon,
     };
 
     return convertedCoordinates;
