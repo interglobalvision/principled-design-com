@@ -255,7 +255,7 @@ Site.Shapes = {
     }
 
     // Reaching 2 limits means we are at a corner
-    if(reachedLimits >= 2) {
+    if (reachedLimits >= 2) {
       _this.atCorner = true;
     } else {
       _this.atCorner = false;
@@ -674,7 +674,7 @@ Site.Map = {
     var transformMatrix = getComputedStyle(elem).transform; // Returns a string like "matrix(0,0,0,0,0,0)"
 
     // If no transform styles applied yet, return the default array values
-    if(transform = 'none') {
+    if (transform = 'none') {
       return [1,0,0,1,0,0];
     }
 
@@ -966,6 +966,7 @@ Site.Orientation = {
       // We need to trigger this event in order to get the patterns changing
       Site.Map.startPanEvent();
     }
+
   },
 
   bind: function() {
@@ -989,6 +990,7 @@ Site.Orientation = {
 
     // Move the map
     Site.Map.moveMap(newX,newY);
+
   },
 };
 
